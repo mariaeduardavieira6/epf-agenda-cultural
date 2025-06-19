@@ -1,2 +1,7 @@
-bottle
+bottle==0.12.25
 pylint
+beaker==1.11.0
+werkzeug==2.2.2
+qrcode==7.4.2
+Pillow
+ics==0.7.2
