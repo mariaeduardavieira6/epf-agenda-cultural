@@ -1,5 +1,6 @@
-from bottle import Bottle
-from controllers.user_controller import user_routes
+from . import user_controller
 
-def init_controllers(app: Bottle):
-    app.merge(user_routes)
+def init_controllers(app):
+    # Agora chamamos a função 'setup' de dentro do user_controller,
+    # passando a instância da aplicação para ele.
+    user_controller.setup(app)
