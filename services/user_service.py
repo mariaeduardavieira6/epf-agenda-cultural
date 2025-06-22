@@ -1,42 +1,39 @@
-from bottle import request
-from models.user import UserModel, User
+# Arquivo: services/user_service.py
+import json
+import os
+from models.user import User
 
 class UserService:
-    def __init__(self):
-        self.user_model = UserModel()
+    def __init__(self, filepath='data/users.json'):
+        self.filepath = filepath
+        os.makedirs(os.path.dirname(self.filepath), exist_ok=True)
+        if not os.path.exists(self.filepath):
+            with open(self.filepath, 'w', encoding='utf-8') as f:
+                json.dump([], f)
 
+    def _load_users(self):
+        with open(self.filepath, 'r', encoding='utf-8') as f:
+            users_data = json.load(f)
+        return [User(**data) for data in users_data]
 
-    def get_all(self):
-        users = self.user_model.get_all()
-        return users
+    def _save_users(self, users):
+        with open(self.filepath, 'w', encoding='utf-8') as f:
+            json.dump([user.to_dict() for user in users], f, indent=4)
 
+    def get_by_email(self, email: str):
+        for user in self._load_users():
+            if user.email == email:
+                return user
+        return None
 
-    def save(self):
-        last_id = max([u.id for u in self.user_model.get_all()], default=0)
-        new_id = last_id + 1
-        name = request.forms.get('name')
-        email = request.forms.get('email')
-        birthdate = request.forms.get('birthdate')
+    def create_user(self, name, email, password, birthdate):
+        users = self._load_users()
+        if self.get_by_email(email):
+            return None
 
-        user = User(id=new_id, name=name, email=email, birthdate=birthdate)
-        self.user_model.add_user(user)
+        new_id = max([user.id for user in users], default=0) + 1
+        new_user = User(id=new_id, name=name, email=email, password=password, birthdate=birthdate)
 
-
-    def get_by_id(self, user_id):
-        return self.user_model.get_by_id(user_id)
-
-
-    def edit_user(self, user):
-        name = request.forms.get('name')
-        email = request.forms.get('email')
-        birthdate = request.forms.get('birthdate')
-
-        user.name = name
-        user.email = email
-        user.birthdate = birthdate
-
-        self.user_model.update_user(user)
-
-
-    def delete_user(self, user_id):
-        self.user_model.delete_user(user_id)
+        users.append(new_user)
+        self._save_users(users)
+        return new_user
