@@ -23,3 +23,19 @@ def setup(app):
         
         print(f"Usuário '{name}' cadastrado com sucesso. Redirecionando para /login.")
         redirect('/login')
+
+    
+    @app.route('/login', method='GET')
+    @view('login')
+    def show_login_form():
+
+        return {}
+
+    @app.route('/login', method='POST')
+    def process_login():
+        email = request.forms.get('email')
+        password = request.forms.get('password')
+
+        print(f"Tentativa de login com o email: {email}")
+
+        redirect('/')
