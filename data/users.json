@@ -1,8 +1,18 @@
 [
     {
         "id": 1,
-        "name": "UsuÃ¡rio Teste",
-        "email": "uduarioteste@email.com",
-        "birthdate": "1999-10-21"
+        "name": "joao",
+        "email": "joao@gmail.com",
+        "password": null,
+        "birthdate": "1975-12-07",
+        "is_admin": false
+    },
+    {
+        "id": 2,
+        "name": "maria",
+        "email": "maria@gmail.com",
+        "password": "maria123",
+        "birthdate": "2000-09-12",
+        "is_admin": false
     }
 ]
