@@ -28,7 +28,6 @@ def setup(app):
     @app.route('/login', method='GET')
     @view('login')
     def show_login_form():
-
         return {}
 
     @app.route('/login', method='POST')
@@ -36,6 +35,14 @@ def setup(app):
         email = request.forms.get('email')
         password = request.forms.get('password')
 
-        print(f"Tentativa de login com o email: {email}")
+        user = user_service.get_by_email(email)
 
-        redirect('/')
+        if user and user.get_password() == password:
+
+            print(f"Login bem-sucedido para o usuário: {user.get_name()}")
+            
+            redirect('/') 
+        else:
+            print("Falha no login: email ou senha incorretos.")
+            
+            redirect('/login')
