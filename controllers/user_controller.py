@@ -1,3 +1,4 @@
+
 from bottle import route, view, request, redirect
 from services.user_service import UserService
 
@@ -37,12 +38,22 @@ def setup(app):
 
         user = user_service.get_by_email(email)
 
-        if user and user.get_password() == password:
-
-            print(f"Login bem-sucedido para o usuário: {user.get_name()}")
+        if user and user.password == password:
+            session = request.environ.get('beaker.session')
             
+            session['user_id'] = user.id
+            session['user_name'] = user.name
+            session['is_admin'] = user.is_admin
+            session.save() 
+
+            print(f"Sessão criada para o usuário: {user.name}")
             redirect('/') 
         else:
             print("Falha no login: email ou senha incorretos.")
-            
             redirect('/login')
+
+    @app.route('/logout')
+    def logout_user():
+        session = request.environ.get('beaker.session')
+        session.delete() 
+        redirect('/login')
