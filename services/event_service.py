@@ -1,48 +1,58 @@
+# Arquivo: services/event_service.py
+
 import json
 import os
-from models.event import Event
+from models.event import Event  # Assumindo que a Dupla 2 já criou este model
 
 class EventService:
-    def __init__(self, arquivo="events.json"):
-        self.arquivo = arquivo
-        self.eventos = self._carregar_eventos()
+    def __init__(self, filepath='data/events.json'):
+        self.filepath = filepath
+        os.makedirs(os.path.dirname(self.filepath), exist_ok=True)
+        if not os.path.exists(self.filepath):
+            with open(self.filepath, 'w', encoding='utf-8') as f:
+                json.dump([], f)
 
-    def _carregar_eventos(self):
-        if os.path.exists(self.arquivo):
-            with open(self.arquivo, "r", encoding="utf-8") as f:
-                try:
-                    data = json.load(f)
-                    return [Event.from_dict(e) for e in data]
-                except json.JSONDecodeError:
-                    return []
-        return []
+    def _load_events(self):
+        with open(self.filepath, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        # O model Event precisa ter um construtor que aceite estes argumentos
+        return [Event(**item) for item in data]
 
-    def _salvar_eventos(self):
-        with open(self.arquivo, "w", encoding="utf-8") as f:
-            json.dump([e.to_dict() for e in self.eventos], f, indent=4, ensure_ascii=False)
+    def _save_events(self, events):
+        with open(self.filepath, 'w', encoding='utf-8') as f:
+            json.dump([e.to_dict() for e in events], f, indent=4)
 
-    def adicionar_evento(self, evento: Event):
-        self.eventos.append(evento)
-        self._salvar_eventos()  
-        print(f"Evento '{evento.title}' adicionado com sucesso!")
+    def get_all(self):
+        return self._load_events()
 
-    def listar_eventos(self):
-        return self.eventos
-
-    def buscar_evento_por_titulo(self, titulo: str):
-        for evento in self.eventos:
-            if evento.title == titulo:
-                return evento
+    def get_by_id(self, event_id):
+        event_id = int(event_id)
+        for event in self._load_events():
+            if event.id == event_id:
+                return event
         return None
 
-    def remover_evento(self, titulo: str):
-        evento = self.buscar_evento_por_titulo(titulo)
-        if evento:
-            self.eventos.remove(evento)
-            self._salvar_eventos()  
-            print(f"Evento '{titulo}' removido com sucesso!")
-            return True
-        print(f"Evento '{titulo}' não encontrado.")
-        return False
+    def create(self, name, date, location, capacity, description):
+        events = self._load_events()
+        new_id = max([e.id for e in events], default=0) + 1
+        
+        new_event = Event(
+            id=new_id, 
+            name=name, 
+            date=date, 
+            location=location, 
+            capacity=capacity, 
+            description=description
+        )
+        
+        events.append(new_event)
+        self._save_events(events)
+        return new_event
 
+    def delete(self, event_id):
+        events = self._load_events()
+
+        updated_events = [e for e in events if e.id != int(event_id)]
+        
+        self._save_events(updated_events)
 

@@ -1,9 +1,18 @@
-
-from bottle import route, view, request, redirect
+from bottle import route, view, request, redirect, static_file
 from services.user_service import UserService
 
 def setup(app):
     user_service = UserService()
+
+    @app.route('/', method='GET')
+    @view('home')  
+    def home_page():
+        session = request.environ.get('beaker.session')
+        
+       
+        user_name = session.get('user_name', None)
+
+        return dict(user_name=user_name)
 
     @app.route('/register', method='GET')
     @view('user_form')
@@ -24,7 +33,6 @@ def setup(app):
         
         print(f"Usuário '{name}' cadastrado com sucesso. Redirecionando para /login.")
         redirect('/login')
-
     
     @app.route('/login', method='GET')
     @view('login')
