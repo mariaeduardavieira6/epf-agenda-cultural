@@ -4,7 +4,7 @@ from config import Config
 
 class App:
     def __init__(self):
-        self.bottle = Bottle()
+        self.bottle_app = Bottle()
         self.config = Config()
 
         
@@ -15,20 +15,20 @@ class App:
             'session.auto': True
         }
 
-        self.bottle = SessionMiddleware(self.bottle, session_opts)
+        self.bottle = SessionMiddleware(self.bottle_app, session_opts)
 
 
     def setup_routes(self):
         from controllers import init_controllers
 
-        init_controllers(self.bottle.app)
+        init_controllers(self.bottle_app)
 
 
     
     def run(self):
         self.setup_routes()
         run(
-            self.bottle, 
+            self.bottle_app, 
             host=self.config.HOST,
             port=self.config.PORT,
             debug=self.config.DEBUG,
@@ -38,3 +38,7 @@ class App:
 
 def create_app():
     return App()
+
+if __name__ == "__main__":
+    app = create_app()
+    app.run()
