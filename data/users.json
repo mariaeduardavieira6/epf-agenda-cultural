@@ -14,5 +14,37 @@
         "password": "maria123",
         "birthdate": "2000-09-12",
         "is_admin": false
+    },
+    {
+        "id": 3,
+        "name": "vitor",
+        "email": "vitor@gmail.com",
+        "password": "vitor123",
+        "birthdate": "1999-02-15",
+        "is_admin": false
+    },
+    {
+        "id": 4,
+        "name": "joana",
+        "email": "joaninha@gmail.com",
+        "password": "123456",
+        "birthdate": "2001-08-15",
+        "is_admin": false
+    },
+    {
+        "id": 5,
+        "name": "junior",
+        "email": "junior@gmail.com",
+        "password": "junior123",
+        "birthdate": "2003-12-20",
+        "is_admin": false
+    },
+    {
+        "id": 6,
+        "name": "jaqueline",
+        "email": "jaqueline@gmail.com",
+        "password": "123456",
+        "birthdate": "2000-09-12",
+        "is_admin": false
     }
 ]
