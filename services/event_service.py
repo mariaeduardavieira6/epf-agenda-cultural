@@ -44,5 +44,4 @@ class EventService:
             return True
         print(f"Evento '{titulo}' não encontrado.")
         return False
-
-
+    
