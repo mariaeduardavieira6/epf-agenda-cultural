@@ -1,6 +1,4 @@
 """
-Módulo de Serviço para Gerenciamento de Eventos (services/event_service.py)
-
 Este arquivo contém a classe EventService, responsável por toda a lógica de
 negócio e persistência de dados para os eventos, manipulando o arquivo data/events.json.
 Cumpre o papel da camada de "Service" na arquitetura MVC.

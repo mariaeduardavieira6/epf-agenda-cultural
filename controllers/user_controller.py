@@ -1,4 +1,3 @@
-# Arquivo: controllers/user_controller.py
 from bottle import route, view, request, redirect, static_file
 from services.user_service import UserService
 

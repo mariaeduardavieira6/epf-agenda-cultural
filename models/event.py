@@ -1,6 +1,4 @@
 """
-Módulo de Models para Eventos (models/event.py)
-
 Este arquivo define a classe que representa a entidade de um evento na aplicação,
 cumprindo o papel da camada "Model" na arquitetura MVC.
 """
@@ -22,6 +20,7 @@ class Event:
             capacity (int): A capacidade máxima de participantes.
             description (str, optional): Uma descrição mais detalhada do evento.
         """
+        # Atributos da instância que guardam as informações de cada evento
         self.id = id
         self.name = name
         self.date = date
@@ -32,7 +31,8 @@ class Event:
     def to_dict(self):
         """
         Converte o objeto Event para um dicionário Python.
-        Este método é crucial para salvar os dados no formato JSON.
+        Este método é crucial para salvar os dados no formato JSON,
+        sendo utilizado pelo EventService.
         """
         return {
             "id": self.id,
