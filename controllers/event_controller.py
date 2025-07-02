@@ -183,3 +183,55 @@ def setup(app):
             session=session,
             registration_service=registration_service
         )
+    
+    # Rota GET para mostrar formaulário edição com validação is_admin
+    @app.route('/events/edit/<event_id:int>', method='GET')
+    @view('event_form')
+    def edit_event_form(event_id):
+        session = request.environ.get('beaker.session')
+        if not session.get('is_admin'):
+            return redirect('/')
+
+        event = event_service.get_by_id(event_id)
+        return dict(
+            event=event,
+            action=f'/events/edit/{event_id}',
+            error=None,
+            session=session
+        )
+
+    # Rota POST para atualizar evento, apenas para admin
+    @app.route('/events/edit/<event_id:int>', method='POST')
+    def update_event(event_id):
+        session = request.environ.get('beaker.session')
+        if not session.get('is_admin'):
+            return redirect('/')
+
+        name = request.forms.get("name")
+        date = request.forms.get("date")
+        location = request.forms.get("location")
+        capacity = request.forms.get("capacity")
+        description = request.forms.get("description")
+
+        updated = event_service.update(event_id, name, date, location, capacity, description)
+        if not updated:
+            return template(
+                "event_form", 
+                event=event_service.get_by_id(event_id), 
+                action=f'/events/edit/{event_id}', 
+                error="Erro ao atualizar evento.", 
+                session=session
+            )
+
+        redirect(f'/events/{event_id}')
+
+    # Rota POST para excluir evento, apenas para admin
+    @app.route('/events/delete/<event_id:int>', method='POST')
+    def delete_event(event_id):
+        session = request.environ.get('beaker.session')
+        if not session.get('is_admin'):
+            return redirect('/')
+
+        event_service.delete(event_id)
+        redirect('/')
+

@@ -54,5 +54,13 @@
         "password": "love",
         "birthdate": "1999-06-20",
         "is_admin": false
+    },
+    {
+        "id": 8,
+        "name": "Clara",
+        "email": "clara@gmail.com",
+        "password": "1234",
+        "birthdate": "2000-05-20",
+        "is_admin": false
     }
 ]

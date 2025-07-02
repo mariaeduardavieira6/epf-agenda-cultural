@@ -35,6 +35,19 @@
     <p><a href="/login">Faça login</a> para se inscrever.</p>
 % end
 
+<h1>{{event.name}}</h1>
+<p>Data: {{event.date}}</p>
+<p>Local: {{event.location}}</p>
+<p>Descrição: {{event.description}}</p>
+
+% if session and session.get('is_admin'):
+    <a href="/events/edit/{{event.id}}" class="btn btn-warning">Editar</a>
+
+    <form action="/events/delete/{{event.id}}" method="post" style="display:inline;">
+        <button type="submit" class="btn btn-danger" onclick="return confirm('Deseja realmente excluir este evento?');">Cancelar Evento</button>
+    </form>
+% end
+
 <a href="/">Voltar para a lista</a>
 </body>
 </html>

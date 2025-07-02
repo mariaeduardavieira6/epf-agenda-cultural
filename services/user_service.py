@@ -25,18 +25,29 @@ class UserService:
             if user.email == email:
                 return user
         return None
-
-    def create_user(self, name, email, password, birthdate):
-        users = self._load_users()
-        if self.get_by_email(email):
-            return None
-
-        new_id = max([user.id for user in users], default=0) + 1
-        new_user = User(id=new_id, name=name, email=email, password=password, birthdate=birthdate)
-
-        users.append(new_user)
-        self._save_users(users)
-        return new_user
     
     def get_all(self):
         return self._load_users()
+    
+    def create_user(self, name, email, password, birthdate):
+        users = self.get_all()
+        is_admin = False
+        if len(users) == 0:
+            is_admin = True  # primeiro usuário será admin
+
+        # gera novo ID (exemplo)
+        new_id = max((u.id for u in users), default=0) + 1
+
+        new_user = User(
+            id=new_id,
+            name=name,
+            email=email,
+            password=password,
+            birthdate=birthdate,
+            is_admin=is_admin
+        )
+        
+        users.append(new_user)
+        self._save_users(users)  # método que salva no JSON
+
+        return new_user
