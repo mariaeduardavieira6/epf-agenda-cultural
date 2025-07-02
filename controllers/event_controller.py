@@ -2,6 +2,7 @@ from bottle import view, request, redirect, template
 from services.event_service import EventService
 # Importamos o UserService para futuras verificações de permissões
 from services.user_service import UserService 
+from services.registration_service import RegistrationService
 
 # --- Função de Validação 
 def validate_event_data(name, date, location, capacity_raw):
@@ -20,6 +21,7 @@ def validate_event_data(name, date, location, capacity_raw):
 def setup(app):
     event_service = EventService()
     user_service = UserService() # Instância para futuras verificações
+    registration_service = RegistrationService()
 
     # Rota da página inicial: Lista de Eventos
     @app.route('/')
@@ -112,10 +114,25 @@ def setup(app):
         session = request.environ.get('beaker.session')
         if not session.get('is_admin'):
             return redirect('/')
-        
-        # TODO: Adicionar a lógica de atualização no EventService e chamá-la aqui
-        print(f"Lógica de ATUALIZAR para o evento {event_id} virá aqui.")
+
+        name = request.forms.get("name")
+        date = request.forms.get("date")
+        location = request.forms.get("location")
+        capacity = request.forms.get("capacity")
+        description = request.forms.get("description")
+
+        updated = event_service.update(event_id, name, date, location, capacity, description)
+        if not updated:
+            return template(
+            "event_form", 
+            event=event_service.get_by_id(event_id), 
+            action=f'/events/edit/{event_id}', 
+            error="Erro ao atualizar evento.", 
+            session=session
+        )
+
         redirect(f'/events/{event_id}')
+
 
     # Rota para DELETAR um evento
     @app.route('/events/delete/<event_id:int>', method='POST')
@@ -126,3 +143,43 @@ def setup(app):
         
         event_service.delete(event_id)
         redirect('/')
+
+    #Rota para inscrição em um determinado evento
+    @app.route('/events/<event_id:int>/register', method='GET')
+    @view('event_register_form')
+    def show_register_event_form(event_id):
+        session = request.environ.get('beaker.session')
+        if not session.get('user_id'):
+            return redirect('/login')
+
+        event = event_service.get_by_id(event_id)
+        if not event:
+            return redirect('/')
+        
+        return dict(event=event, session=session, error = None)
+
+    @app.route('/events/<event_id:int>/register', method='POST')
+    def process_register_event(event_id):
+        session = request.environ.get('beaker.session')
+        if not session.get('user_id'):
+            return redirect('/login')
+
+        user_id = session['user_id']
+        success = registration_service.register_user_to_event(user_id, event_id)
+
+        if not success:
+            # Já inscrito ou erro
+            return template('event_register_form', event=event_service.get_by_id(event_id),
+                            error='Você já está inscrito neste evento.', session=session)
+
+
+    @app.route('/events/<event_id:int>')
+    @view('event_detail')
+    def event_detail(event_id):
+        event = event_service.get_by_id(event_id)
+        session = request.environ.get('beaker.session')
+        return dict(
+            event=event,
+            session=session,
+            registration_service=registration_service
+        )
