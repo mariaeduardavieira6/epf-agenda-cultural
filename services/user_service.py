@@ -37,3 +37,6 @@ class UserService:
         users.append(new_user)
         self._save_users(users)
         return new_user
+    
+    def get_all(self):
+        return self._load_users()
