@@ -63,19 +63,28 @@ def setup(app):
         session = request.environ.get('beaker.session')
         if not session.get('user_name'):
             return redirect('/login')
+        
 
-        name = request.forms.get("name").strip()
+        name = (request.forms.get("title") or "").strip()
         date = request.forms.get("date")
-        location = request.forms.get("location").strip()
-        capacity_raw = request.forms.get("capacity")
-        description = request.forms.get("description").strip()
-        
-        error, capacity = validate_event_data(name, date, location, capacity_raw)
-        
-        if error:
-            return template( "event_form", event=None, action='/events/new', error=error, session=session )
+        location = (request.forms.get("location") or "").strip()
+        capacity_raw = (request.forms.get("capacity") or "").strip()
+        description = (request.forms.get("description") or "").strip()
 
-        event_service.create(name, date, location, capacity, description)
+
+        print(f"Dados recebidos: {name}, {date}, {location}, {capacity_raw}, {description}")
+
+        error, capacity = validate_event_data(name, date, location, capacity_raw)
+
+        if error:
+            return template("event_form", event=None, action='/events/new', error=error, session=session)
+
+        try:
+            event_service.create(name, date, location, capacity, description)
+        except Exception as e:
+            print(f"Erro ao criar evento: {e}")
+            return template("event_form", event=None, action='/events/new', error="Erro interno ao salvar o evento.", session=session)
+
         redirect('/')
         
     # --- ROTAS NOVAS PARA EDITAR E DELETAR ---

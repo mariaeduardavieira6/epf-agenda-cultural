@@ -46,5 +46,13 @@
         "password": "123456",
         "birthdate": "2000-09-12",
         "is_admin": false
+    },
+    {
+        "id": 7,
+        "name": "Ju",
+        "email": "ju@gmail.com",
+        "password": "love",
+        "birthdate": "1999-06-20",
+        "is_admin": false
     }
 ]

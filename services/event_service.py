@@ -69,3 +69,25 @@ def remover_evento(self, titulo: str):
         print(f"Evento '{titulo}' não encontrado.")
         return False
 
+def create(self, name, date, location, capacity, description):
+    """Cria um novo evento e o salva no arquivo JSON."""
+    events = self._load_events()
+
+    # Gera um novo ID baseado no maior ID existente
+    if events:
+        new_id = max(event.id for event in events) + 1
+    else:
+        new_id = 1
+
+    # Cria o novo objeto de evento com os campos corretos
+    new_event = Event(
+        id=new_id,
+        name=name,
+        date=date,
+        location=location,
+        capacity=capacity,
+        description=description
+    )
+
+    events.append(new_event)
+    self._save_events(events)
