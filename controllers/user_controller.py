@@ -3,7 +3,7 @@ from services.user_service import UserService
 
 def setup(app):
     user_service = UserService()
-
+    
     # Rotas de Cadastro
     @app.route('/register', method='GET')
     @view('user_form')
@@ -52,3 +52,25 @@ def setup(app):
     @app.route('/static/<filepath:path>')
     def server_static(filepath):
         return static_file(filepath, root='./static')
+    
+  
+    # Rota para Página de Administração - lista de usuários
+    @app.route('/adm/users')
+    @view('admin_users')
+    def admin_users():
+        session = request.environ.get('beaker.session')
+        if not session.get('is_admin'):
+            return redirect('/')
+        # Só executa para admin
+            users = user_service.get_all()
+            return dict(users=users, session=session, registration_service=registration_service)
+    
+    # Rota para remover inscrições de usuário no evento (admin)
+    @app.route('/adm/users/<user_id:int>/remove_registration/<event_id:int>', method='POST')
+    def remove_registration(user_id, event_id):
+        session = request.environ.get('beaker.session')
+        if not session.get('is_admin'):
+            return redirect('/')
+        # Só executa para admin
+            registration_service.unregister_user_from_event(user_id, event_id)
+            redirect('/adm/users')
