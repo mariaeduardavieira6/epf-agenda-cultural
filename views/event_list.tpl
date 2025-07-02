@@ -18,5 +18,10 @@
   </ul>
 % end
 
+% if session.get('is_admin'):
+    <a href="/events/new">Criar Novo Evento</a>
+% end
+
+
 <br>
 <a href="/events/new">Criar novo evento</a>
