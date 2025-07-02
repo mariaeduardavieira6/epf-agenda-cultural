@@ -1,9 +1,8 @@
-%# Esta é a linha mais importante: ela faz a página usar o layout principal.
+%# Usa o layout padrão (se existir)
 % rebase('layout.tpl', title='Eventos')
 
 <h1>Eventos Cadastrados</h1>
 
-%# Verificamos se a lista de eventos não está vazia.
 % if not events:
   <p>Nenhum evento cadastrado ainda.</p>
 % else:
@@ -12,7 +11,8 @@
     <li class="event-item">
       <strong>{{event.name}}</strong><br>
       Data: {{event.date}}<br>
-      Local: {{event.location}}
+      Local: {{event.location}}<br>
+      <a href="/events/{{event.id}}">Ver detalhes</a>
     </li>
   % end
   </ul>

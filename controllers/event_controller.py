@@ -64,7 +64,7 @@ def setup(app):
         if not session.get('user_name'):
             return redirect('/login')
         
-
+        
         name = (request.forms.get("title") or "").strip()
         date = request.forms.get("date")
         location = (request.forms.get("location") or "").strip()
