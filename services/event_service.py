@@ -1,8 +1,3 @@
-"""
-Este arquivo contém a classe EventService, responsável por toda a lógica de
-negócio e persistência de dados para os eventos, manipulando o arquivo data/events.json.
-Cumpre o papel da camada de "Service" na arquitetura MVC.
-"""
 import json
 import os
 from models.event import Event
@@ -53,41 +48,95 @@ class EventService:
         Returns:
             Event | None: O objeto Event se encontrado, ou None caso contrário.
         """
-        event_id = int(event_id)
+        try:
+            event_id = int(event_id)
+        except ValueError:
+            return None # Retorna None se o ID não for um número válido
+
         for event in self._load_events():
             if event.id == event_id:
                 return event
         return None
+    
+    def create(self, name, date, location, capacity, description):
+        """Cria um novo evento e o salva no arquivo JSON."""
+        events = self._load_events()
 
-def remover_evento(self, titulo: str):
-        evento = self.buscar_evento_por_titulo(titulo)
-        if evento:
-            self.eventos.remove(evento)
-            self._salvar_eventos()  
-            print(f"Evento '{titulo}' removido com sucesso!")
+        # Gera um novo ID baseado no maior ID existente
+        new_id = max((event.id for event in events), default=0) + 1
+
+        # Cria o novo objeto de evento
+        new_event = Event(
+            id=new_id,
+            name=name,
+            date=date,
+            location=location,
+            capacity=int(capacity),
+            description=description
+        )
+
+        events.append(new_event)
+        self._save_events(events)
+        return new_event # Retorna o evento criado
+
+    def update(self, event_id, name=None, date=None, location=None, capacity=None, description=None):
+        """
+        Atualiza um evento existente.
+
+        Args:
+            event_id (int | str): O ID do evento a ser atualizado.
+            name (str, optional): Novo nome do evento.
+            date (str, optional): Nova data do evento.
+            location (str, optional): Nova localização do evento.
+            capacity (int, optional): Nova capacidade do evento.
+            description (str, optional): Nova descrição do evento.
+
+        Returns:
+            Event | None: O objeto Event atualizado se encontrado, ou None caso contrário.
+        """
+        events = self._load_events()
+        try:
+            event_id = int(event_id)
+        except ValueError:
+            return None
+
+        for i, event in enumerate(events):
+            if event.id == event_id:
+                if name is not None:
+                    events[i].name = name
+                if date is not None:
+                    events[i].date = date
+                if location is not None:
+                    events[i].location = location
+                if capacity is not None:
+                    events[i].capacity = int(capacity)
+                if description is not None:
+                    events[i].description = description
+                
+                self._save_events(events)
+                return events[i] # Retorna o evento atualizado
+        return None
+
+    def delete(self, event_id):
+        """
+        Remove um evento pelo seu ID.
+
+        Args:
+            event_id (int | str): O ID do evento a ser removido.
+
+        Returns:
+            bool: True se o evento foi removido, False caso contrário.
+        """
+        events = self._load_events()
+        try:
+            event_id = int(event_id)
+        except ValueError:
+            return False
+
+        original_len = len(events)
+        events = [event for event in events if event.id != event_id]
+        
+        if len(events) < original_len:
+            self._save_events(events)
             return True
-        print(f"Evento '{titulo}' não encontrado.")
         return False
-
-def create(self, name, date, location, capacity, description):
-    """Cria um novo evento e o salva no arquivo JSON."""
-    events = self._load_events()
-
-    # Gera um novo ID baseado no maior ID existente
-    if events:
-        new_id = max(event.id for event in events) + 1
-    else:
-        new_id = 1
-
-    # Cria o novo objeto de evento com os campos corretos
-    new_event = Event(
-        id=new_id,
-        name=name,
-        date=date,
-        location=location,
-        capacity=capacity,
-        description=description
-    )
-
-    events.append(new_event)
-    self._save_events(events)

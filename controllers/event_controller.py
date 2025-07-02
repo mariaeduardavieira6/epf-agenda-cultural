@@ -65,8 +65,8 @@ def setup(app):
             return redirect('/login')
         
         
-        name = (request.forms.get("title") or "").strip()
-        date = request.forms.get("date")
+        name = (request.forms.get("name") or "").strip()
+        date = (request.forms.get("date") or "").strip()
         location = (request.forms.get("location") or "").strip()
         capacity_raw = (request.forms.get("capacity") or "").strip()
         description = (request.forms.get("description") or "").strip()
