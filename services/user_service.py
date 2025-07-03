@@ -1,4 +1,3 @@
-# Arquivo: services/user_service.py
 import json
 import os
 from models.user import User
@@ -25,6 +24,21 @@ class UserService:
             if user.email == email:
                 return user
         return None
+    
+    # --- MÉTODO ADICIONADO ---
+    def get_by_id(self, user_id):
+        """Busca um usuário pelo seu ID."""
+        try:
+            # Garante que o ID seja um inteiro para a comparação
+            user_id = int(user_id)
+        except (ValueError, TypeError):
+            return None # Retorna None se o ID não for um número válido
+            
+        for user in self._load_users():
+            if user.id == user_id:
+                return user
+        return None
+    # -------------------------
 
     def create_user(self, name, email, password, birthdate):
         users = self._load_users()

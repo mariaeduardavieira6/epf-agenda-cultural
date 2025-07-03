@@ -1,41 +1,60 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Detalhes do Evento</title>
-</head>
-<body>
-    <h1>{{event.name}}</h1>
+%# Usando o layout.tpl como base
+% rebase('layout.tpl', title=event.name)
 
-    <p><strong>Descrição:</strong> {{event.description}}</p>
-    <p><strong>Data:</strong> {{event.date}}</p>
-    <p><strong>Local:</strong> {{event.location}}</p>
-    <p><strong>Capacidade:</strong> {{event.capacity}}</p>
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h1>{{ event.name }}</h1>
+        </div>
+        <div class="card-body">
+            <p><strong>Descrição:</strong> {{ event.description }}</p>
+            <p><strong>Data:</strong> {{ event.date }}</p>
+            <p><strong>Local:</strong> {{ event.location }}</p>
+            <p><strong>Capacidade:</strong> {{ len(subscribers) }} / {{ event.capacity }}</p>
+            
+            <hr>
 
-    <br>
-    <a href="/events/edit/{{event.id}}">Editar</a> |
-    <form action="/events/delete/{{event.id}}" method="post" style="display:inline;">
-        <button type="submit" onclick="return confirm('Deseja realmente excluir este evento?')">Excluir</button>
-    </form> |
-    
-% if session.get('is_admin'):
-    <a href="/events/edit/{{event.id}}">Editar</a> |
-    <form action="/events/delete/{{event.id}}" method="post" style="display:inline;">
-        <button type="submit" onclick="return confirm('Deseja realmente cancelar este evento?')">Cancelar Evento</button>
-    </form> |
-% end
+            % if session.get('is_admin'):
+                <a href="/events/edit/{{event.id}}" class="btn btn-primary">Editar Evento</a>
+                
+                <form action="/events/delete/{{event.id}}" method="post" style="display:inline;" onsubmit="return confirm('Tem certeza que deseja excluir este evento?');">
+                    <button type="submit" class="btn btn-danger">Excluir Evento</button>
+                </form>
+            % end
 
-% if session.get('user_id'):
-    % if not registration_service.is_user_registered(session.get('user_id'), event.id):
-        <a href="/events/{{event.id}}/register">Inscrever-se neste evento</a>
-    % else:
-        <p>Você já está inscrito neste evento.</p>
-    % end
-% else:
-    <p><a href="/login">Faça login</a> para se inscrever.</p>
-% end
+            % if session.get('user_id') and not session.get('is_admin'):
+                
+                % if is_subscribed:
+                    <form action="/events/{{event.id}}/unsubscribe" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-warning">Cancelar Inscrição</button>
+                    </form>
+                % else:
+                    <form action="/events/{{event.id}}/subscribe" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-success">Inscrever-se</button>
+                    </form>
+                % end
 
-<a href="/">Voltar para a lista</a>
-</body>
-</html>
+            % end
+            
+            <a href="/" class="btn btn-secondary">Voltar para a lista</a>
 
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            <h3>Participantes Inscritos ({{ len(subscribers) }})</h3>
+        </div>
+        <div class="card-body">
+            % if subscribers:
+                <ul class="list-group">
+                    % for user in subscribers:
+                        <li class="list-group-item">{{ user.name }}</li>
+                    % end
+                </ul>
+            % else:
+                <p>Ninguém se inscreveu neste evento ainda.</p>
+            % end
+        </div>
+    </div>
+</div>

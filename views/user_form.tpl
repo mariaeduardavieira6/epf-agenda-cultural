@@ -1,26 +1,28 @@
-% rebase('layout.tpl', title='Formulário Usuário')
+% rebase('layout.tpl', title='Cadastro de Usuário')
+
 <div class="form-section">
-    <h1>{{'Editar Usuário' if user else 'Adicionar Usuário'}}</h1>
-    <form action="{{action}}" method="post" class="form-container">
+    <h1>Cadastrar Nova Conta</h1>
+
+    <form action="/register" method="post" class="form-container">
         <div class="form-group">
-            <label for="name">Nome:</label>
-            <input type="text" id="name" name="name" required value="{{user.name if user else ''}}">
+            <label for="name">Nome Completo:</label>
+            <input type="text" id="name" name="name" class="form-control" required>
         </div>
         <div class="form-group">
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required value="{{user.email if user else ''}}">
+            <input type="email" id="email" name="email" class="form-control" required>
         </div>
         <div class="form-group">
             <label for="password">Senha:</label>
-            <input type="password" id="password" name="password" required>
+            <input type="password" id="password" name="password" class="form-control" required>
         </div>
         <div class="form-group">
             <label for="birthdate">Data de Nascimento:</label>
-            <input type="date" id="birthdate" name="birthdate" required value="{{user.birthdate if user else ''}}">
+            <input type="date" id="birthdate" name="birthdate" class="form-control" required>
         </div>
         <div class="form-actions">
-            <button type="submit" class="btn-submit">Salvar</button>
-            <a href="/" class="btn-cancel">Voltar</a>
+            <button type="submit" class="btn-submit">Cadastrar</button>
+            <a href="/login" class="btn-cancel">Já tem uma conta? Faça o login.</a>
         </div>
     </form>
 </div>

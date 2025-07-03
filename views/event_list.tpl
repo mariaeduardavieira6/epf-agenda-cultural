@@ -1,4 +1,3 @@
-%# Usa o layout padrão (se existir)
 % rebase('layout.tpl', title='Eventos')
 
 <h1>Eventos Cadastrados</h1>
@@ -12,16 +11,16 @@
       <strong>{{event.name}}</strong><br>
       Data: {{event.date}}<br>
       Local: {{event.location}}<br>
+      
+      Descrição: {{event.description}}<br> 
+      
       <a href="/events/{{event.id}}">Ver detalhes</a>
     </li>
   % end
   </ul>
 % end
 
-% if session.get('is_admin'):
-    <a href="/events/new">Criar Novo Evento</a>
-% end
-
-
 <br>
-<a href="/events/new">Criar novo evento</a>
+% if session and session.get('is_admin'):
+  <a href="/events/new" class="btn-submit">Criar novo evento</a>
+% end
