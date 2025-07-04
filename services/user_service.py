@@ -1,3 +1,5 @@
+# services/user_service.py
+
 """
 Módulo de Serviço para Gerenciamento de Usuários (services/user_service.py)
 
@@ -32,21 +34,15 @@ class UserService:
             list[User]: Uma lista de objetos User. Retorna uma lista vazia se
                         o arquivo estiver vazio, corrompido ou não for encontrado.
         """
-        # --- INÍCIO DA ALTERAÇÃO ---
         try:
             with open(self.filepath, 'r', encoding='utf-8') as f:
                 users_data = json.load(f)
-            # Garante que os dados do arquivo são realmente uma lista
             if not isinstance(users_data, list):
                 return []
         except (json.JSONDecodeError, FileNotFoundError):
-            # Se o arquivo estiver vazio, com erro de formato ou não existir,
-            # retorna uma lista vazia para evitar que a aplicação quebre.
             return []
         
-        # Converte a lista de dicionários em uma lista de objetos User
         return [User(**data) for data in users_data]
-        # --- FIM DA ALTERAÇÃO ---
 
     def _save_users(self, users):
         """Método privado para salvar a lista de usuários no arquivo JSON."""
@@ -80,11 +76,10 @@ class UserService:
     def create_user(self, name, email, password, birthdate):
         """Cria um novo usuário e o salva no arquivo."""
         users = self.get_all()
-        # Regra de negócio: o primeiro usuário criado no sistema é um administrador.
         is_admin = len(users) == 0
 
         if self.get_by_email(email):
-            return None # Não permite emails duplicados
+            return None 
 
         new_id = max((u.id for u in users), default=0) + 1
 
@@ -100,3 +95,9 @@ class UserService:
         users.append(new_user)
         self._save_users(users)
         return new_user
+
+    # --- NOVO MÉTODO ADICIONADO AQUI ---
+    def get_total_count(self):
+        """Retorna o número total de usuários cadastrados."""
+        users = self._load_users()
+        return len(users)

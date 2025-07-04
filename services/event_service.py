@@ -1,3 +1,6 @@
+"""Este arquivo contém a classe EventService, responsável por toda a lógica de
+negócio e persistência de dados para os eventos, manipulando o arquivo data/events.json.
+"""
 import json
 import os
 from models.event import Event
@@ -9,13 +12,9 @@ class EventService:
     """
     def __init__(self, filepath='data/events.json'):
         """
-        Construtor da classe.
-
-        Args:
-            filepath (str): O caminho para o arquivo JSON de eventos.
+        Construtor da classe. Garante que o arquivo de dados exista.
         """
         self.filepath = filepath
-        # Garante que o diretório e o arquivo de dados existam
         os.makedirs(os.path.dirname(self.filepath), exist_ok=True)
         if not os.path.exists(self.filepath):
             with open(self.filepath, 'w', encoding='utf-8') as f:
@@ -24,14 +23,17 @@ class EventService:
     def _load_events(self):
         """Método privado para carregar a lista de eventos do arquivo JSON."""
         with open(self.filepath, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-        # Usa list comprehension para transformar cada dicionário em um objeto Event
-        return [Event(**item) for item in data]
+            try:
+                data = json.load(f)
+                if not isinstance(data, list):
+                    return []
+                return [Event(**item) for item in data]
+            except json.JSONDecodeError:
+                return [] 
 
     def _save_events(self, events):
         """Método privado para salvar a lista de eventos no arquivo JSON."""
         with open(self.filepath, 'w', encoding='utf-8') as f:
-            # Usa o método to_dict() do model Event para preparar os dados
             json.dump([e.to_dict() for e in events], f, indent=4)
 
     def get_all(self):
@@ -39,104 +41,98 @@ class EventService:
         return self._load_events()
 
     def get_by_id(self, event_id):
-        """
-        Busca um evento específico pelo seu ID único.
-
-        Args:
-            event_id (int | str): O ID do evento a ser procurado.
-
-        Returns:
-            Event | None: O objeto Event se encontrado, ou None caso contrário.
-        """
+        """Busca um evento específico pelo seu ID único."""
         try:
             event_id = int(event_id)
-        except ValueError:
-            return None # Retorna None se o ID não for um número válido
-
+        except (ValueError, TypeError):
+            return None
         for event in self._load_events():
             if event.id == event_id:
                 return event
         return None
     
-    def create(self, name, date, location, capacity, description):
-        """Cria um novo evento e o salva no arquivo JSON."""
+    def search_events(self, query="", category=""):
+        """
+        Busca e filtra eventos por nome e/ou categoria.
+        """
+        events = self.get_all()
+        
+        if query:
+            events = [
+                event for event in events 
+                if query.lower() in event.name.lower()
+            ]
+        
+        # --- INÍCIO DA ALTERAÇÃO ---
+        if category:
+            events = [
+                event for event in events
+                # Adicionamos 'if event.category' para garantir que a categoria não é None
+                if event.category and event.category.lower() == category.lower()
+            ]
+        # --- FIM DA ALTERAÇÃO ---
+            
+        return events
+
+    def create(self, name, date, location, capacity, description, category):
+        """
+        Cria um novo evento, agora incluindo a categoria, e o salva no arquivo.
+        """
         events = self._load_events()
-
-        # Gera um novo ID baseado no maior ID existente
         new_id = max((event.id for event in events), default=0) + 1
-
-        # Cria o novo objeto de evento
+        
         new_event = Event(
             id=new_id,
             name=name,
             date=date,
             location=location,
             capacity=int(capacity),
-            description=description
+            description=description,
+            category=category
         )
 
         events.append(new_event)
         self._save_events(events)
-        return new_event # Retorna o evento criado
+        return new_event
 
-    def update(self, event_id, name=None, date=None, location=None, capacity=None, description=None):
-        """
-        Atualiza um evento existente.
-
-        Args:
-            event_id (int | str): O ID do evento a ser atualizado.
-            name (str, optional): Novo nome do evento.
-            date (str, optional): Nova data do evento.
-            location (str, optional): Nova localização do evento.
-            capacity (int, optional): Nova capacidade do evento.
-            description (str, optional): Nova descrição do evento.
-
-        Returns:
-            Event | None: O objeto Event atualizado se encontrado, ou None caso contrário.
-        """
+    def update(self, event_id, data):
+        """Atualiza um evento existente com os novos dados."""
         events = self._load_events()
-        try:
-            event_id = int(event_id)
-        except ValueError:
-            return None
-
+        event_found = False
         for i, event in enumerate(events):
-            if event.id == event_id:
-                if name is not None:
-                    events[i].name = name
-                if date is not None:
-                    events[i].date = date
-                if location is not None:
-                    events[i].location = location
-                if capacity is not None:
-                    events[i].capacity = int(capacity)
-                if description is not None:
-                    events[i].description = description
-                
-                self._save_events(events)
-                return events[i] # Retorna o evento atualizado
-        return None
+            if event.id == int(event_id):
+                event.name = data.get('name', event.name)
+                event.date = data.get('date', event.date)
+                event.location = data.get('location', event.location)
+                event.capacity = int(data.get('capacity', event.capacity))
+                event.description = data.get('description', event.description)
+                event.category = data.get('category', event.category)
+                event_found = True
+                break
+        
+        if event_found:
+            self._save_events(events)
+        return event_found
 
     def delete(self, event_id):
-        """
-        Remove um evento pelo seu ID.
-
-        Args:
-            event_id (int | str): O ID do evento a ser removido.
-
-        Returns:
-            bool: True se o evento foi removido, False caso contrário.
-        """
+        """Remove um evento pelo seu ID."""
         events = self._load_events()
-        try:
-            event_id = int(event_id)
-        except ValueError:
-            return False
-
         original_len = len(events)
-        events = [event for event in events if event.id != event_id]
+        events = [event for event in events if event.id != int(event_id)]
         
         if len(events) < original_len:
             self._save_events(events)
             return True
         return False
+        
+    def get_total_count(self):
+        """Retorna o número total de eventos cadastrados."""
+        events = self._load_events()
+        return len(events)
+
+    def get_total_categories(self):
+        """Retorna o número total de categorias de eventos distintas."""
+        events = self._load_events()
+        # Cria um conjunto (set) para contar apenas categorias únicas
+        unique_categories = {event.category for event in events if event.category}
+        return len(unique_categories)

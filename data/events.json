@@ -1,10 +1,47 @@
 [
-    {
-        "id": 2,
-        "name": "Galinha Pintadinha",
-        "date": "2025-09-15",
-        "location": "Casa de show infantil",
-        "capacity": 2,
-        "description": "show da galinha"
-    }
+  {
+    "id": 1,
+    "name": "Show de Rock Clássico",
+    "date": "2025-08-15",
+    "location": "Estádio Municipal",
+    "capacity": 5000,
+    "description": "Uma noite com os maiores sucessos do rock.",
+    "category": "Música"
+  },
+  {
+    "id": 2,
+    "name": "Peça Teatral: O Auto da Compadecida",
+    "date": "2025-08-20",
+    "location": "Teatro Central",
+    "capacity": 300,
+    "description": "A aclamada peça de Ariano Suassuna.",
+    "category": "Teatro"
+  },
+  {
+    "id": 3,
+    "name": "Exposição de Arte Moderna",
+    "date": "2025-09-01",
+    "location": "Museu de Arte",
+    "capacity": 150,
+    "description": "Obras de artistas renomados do século XX.",
+    "category": "Arte e Exposição"
+  },
+  {
+    "id": 4,
+    "name": "Festival de Cinema Francês",
+    "date": "2025-09-10",
+    "location": "Cine Cultura",
+    "capacity": 100,
+    "description": "Uma seleção dos melhores filmes franceses do ano.",
+    "category": "Cinema"
+  },
+  {
+    "id": 5,
+    "name": "Feira Gastronômica Sabores do Brasil",
+    "date": "2025-09-20",
+    "location": "Praça Central",
+    "capacity": 1000,
+    "description": "Experimente pratos típicos de todas as regiões do Brasil.",
+    "category": "Gastronomia"
+  }
 ]

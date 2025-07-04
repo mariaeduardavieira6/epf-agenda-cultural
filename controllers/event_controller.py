@@ -2,6 +2,8 @@ from bottle import view, request, redirect, template
 from services.event_service import EventService
 from services.user_service import UserService
 from services.inscription_service import InscriptionService
+# --- ALTERAÇÃO: Importando o serviço de Categoria ---
+from services.category_service import CategoryService
 
 # --- Função de Validação ---
 def validate_event_data(name, date, location, capacity_raw):
@@ -20,14 +22,39 @@ def validate_event_data(name, date, location, capacity_raw):
 def setup(app):
     event_service = EventService()
     user_service = UserService()
+    # --- ALTERAÇÃO: Instanciando o serviço de Categoria ---
+    category_service = CategoryService()
     inscription_service = InscriptionService(user_service=user_service, event_service=event_service)
 
-    # Página inicial com lista de eventos
+    # --- INÍCIO DA ALTERAÇÃO PRINCIPAL ---
+    # Agora, a lista de eventos lê o category_id da URL
     @app.route('/')
+    @app.route('/events')
     @view('event_list')
     def list_events():
-        events = event_service.get_all()
-        return dict(events=events, session=request.environ.get('beaker.session'))
+        search_query = request.query.get('query', '').strip()
+        category_id = request.query.get('category_id', '').strip()
+
+        category_name_filter = ""
+        title = "Todos os Eventos"
+
+        # Se um ID de categoria foi passado na URL
+        if category_id:
+            # Busca a categoria pelo ID para obter o nome
+            category = category_service.get_by_id(category_id)
+            if category:
+                category_name_filter = category.name
+                title = f"Eventos de: {category_name_filter}"
+
+        # Usa o nome da categoria para filtrar os eventos
+        events = event_service.search_events(query=search_query, category=category_name_filter)
+        
+        return dict(
+            events=events,
+            title=title,
+            session=request.environ.get('beaker.session')
+        )
+    # --- FIM DA ALTERAÇÃO PRINCIPAL ---
 
     # Detalhes de um evento
     @app.route('/events/<event_id:int>')
@@ -99,6 +126,7 @@ def setup(app):
         location = (request.forms.get("location") or "").strip()
         capacity_raw = (request.forms.get("capacity") or "").strip()
         description = (request.forms.get("description") or "").strip()
+        category = (request.forms.get("category") or "Geral").strip() 
 
         error, capacity = validate_event_data(name, date, location, capacity_raw)
 
@@ -106,7 +134,7 @@ def setup(app):
             return template("event_form", event=None, action='/events/new', error=error, session=session)
 
         try:
-            event_service.create(name, date, location, capacity, description)
+            event_service.create(name, date, location, capacity, description, category)
         except Exception as e:
             print(f"Erro ao criar evento: {e}")
             return template("event_form", event=None, action='/events/new', error="Erro interno ao salvar o evento.", session=session)
@@ -131,13 +159,16 @@ def setup(app):
         if not session.get('is_admin'):
             return redirect('/')
 
-        name = request.forms.get("name")
-        date = request.forms.get("date")
-        location = request.forms.get("location")
-        capacity = request.forms.get("capacity")
-        description = request.forms.get("description")
+        data = {
+            'name': request.forms.get("name"),
+            'date': request.forms.get("date"),
+            'location': request.forms.get("location"),
+            'capacity': request.forms.get("capacity"),
+            'description': request.forms.get("description"),
+            'category': request.forms.get("category")
+        }
 
-        updated = event_service.update(event_id, name, date, location, capacity, description)
+        updated = event_service.update(event_id, data)
         if not updated:
             return template(
                 "event_form",
