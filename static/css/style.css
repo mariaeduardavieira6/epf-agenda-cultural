@@ -1,10 +1,78 @@
-/* --- Estilos para Formulários --- */
+:root {
+    /* Variáveis de cor */
+    --gochujang-red: #780000;
+    --crimson-blaze: #C1121F;
+    --light-beige: #FBF5E5;
+    --cosmos-blue: #003049;
+    --blue-marble: #669BBC;
+    --white: #ffffff;
+    --black: #000000;
+    --gray-light: #f8f9fa;
+    --gray-dark: #343a40;
+}
+
+/* Estilos gerais para o corpo da página */
+body {
+    background-color: var(--light-beige); /* Fundo geral em bege claro */
+    color: var(--cosmos-blue); /* Texto principal em azul escuro */
+    font-family: Arial, sans-serif; /* Exemplo de fonte */
+}
+
+/* Estilos para links */
+a {
+    color: var(--crimson-blaze); /* Links em vermelho vibrante */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Estilos para o cabeçalho/navbar */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Sombra suave para dar profundidade */
+    padding-top: 1rem; /* Espaçamento interno */
+    padding-bottom: 1rem;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: var(--light-beige) !important; /* Marca em bege claro */
+}
+
+.nav-link {
+    color: var(--white) !important; /* Links em branco */
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--blue-marble) !important; /* Mudar para azul claro ao passar o mouse */
+}
+
+/* Para o ícone do hamburguer em telas menores */
+.navbar-toggler {
+    border-color: rgba(255,255,255,0.5);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* Ajuste para o texto de saudação "Olá, ..." */
+.nav-greeting {
+    color: var(--light-beige) !important;
+    padding: .5rem 1rem;
+    display: block;
+}
+
+/* --- Estilos para Formulários (Adaptados para suas cores) --- */
 
 .form-section {
     max-width: 450px;
     margin: 2rem auto; /* Centraliza o formulário na tela */
     padding: 2rem;
-    background-color: white;
+    background-color: var(--white); /* Fundo branco para a seção do formulário */
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -12,7 +80,7 @@
 .form-section h1 {
     text-align: center;
     margin-bottom: 1.5rem;
-    color: #333;
+    color: var(--cosmos-blue); /* Título do formulário em azul escuro */
 }
 
 .form-group {
@@ -23,6 +91,7 @@
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
+    color: var(--cosmos-blue); /* Labels em azul escuro */
 }
 
 .form-group input[type="text"],
@@ -31,10 +100,21 @@
 .form-group input[type="date"] {
     width: 100%;
     padding: 12px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--blue-marble); /* Borda em azul claro */
     border-radius: 5px;
     font-size: 1rem;
+    color: var(--cosmos-blue); /* Texto digitado em azul escuro */
 }
+
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus,
+.form-group input[type="password"]:focus,
+.form-group input[type="date"]:focus {
+    border-color: var(--crimson-blaze); /* Borda em vermelho vibrante ao focar */
+    outline: none; /* Remove o outline padrão do navegador */
+    box-shadow: 0 0 0 0.25rem rgba(193, 18, 31, 0.25); /* Sombra suave com a cor crimson-blaze */
+}
+
 
 .form-actions {
     margin-top: 1.5rem;
@@ -46,8 +126,8 @@
 .btn-submit {
     width: 100%;
     padding: 12px;
-    background-color: #007bff;
-    color: white;
+    background-color: var(--crimson-blaze); /* Botão de envio em vermelho vibrante */
+    color: var(--white); /* Texto branco */
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -56,20 +136,36 @@
 }
 
 .btn-submit:hover {
-    background-color: #0056b3;
+    background-color: var(--gochujang-red); /* Mudar para vermelho mais escuro ao passar o mouse */
 }
 
 .btn-cancel {
-    color: #007bff;
+    color: var(--cosmos-blue); /* Link de cancelamento em azul escuro */
     text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+.btn-cancel:hover {
+    color: var(--blue-marble); /* Mudar para azul claro ao passar o mouse */
 }
 
 /* Estilo para a mensagem de erro */
 .error-message {
-    color: white;
-    background-color: #e74c3c; /* Vermelho */
+    color: var(--white); /* Texto branco na mensagem de erro */
+    background-color: var(--gochujang-red); /* Fundo vermelho escuro para a mensagem de erro */
     padding: 10px;
     border-radius: 5px;
     margin-bottom: 1rem;
     text-align: center;
+}
+
+/* Estilos para o rodapé */
+.main-footer {
+    background-color: var(--cosmos-blue); /* Fundo do rodapé em azul escuro */
+    color: var(--white); /* Texto do rodapé em branco */
+    text-align: center; /* Centralizar o texto */
+    padding: 1.5rem 0; /* Espaçamento interno */
+    margin-top: 3rem; /* Margem superior para separar do conteúdo principal */
+    font-size: 0.9rem; /* Tamanho da fonte um pouco menor */
 }
