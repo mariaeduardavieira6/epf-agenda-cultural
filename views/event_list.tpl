@@ -22,5 +22,7 @@
 
 <br>
 % if session and session.get('is_admin'):
-  <a href="/events/new" class="btn-submit">Criar novo evento</a>
+  <div class="text-center mt-4">
+      <a href="/events/new" class="btn btn-primary">Criar Novo Evento</a>
+  </div>
 % end

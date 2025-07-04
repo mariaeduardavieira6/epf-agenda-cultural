@@ -22,9 +22,6 @@ class User:
 
     def get_birthdate(self):
         return self.birthdate
-
-    def is_admin(self): 
-        return self.is_admin
    
     def to_dict(self):
         """Converte o objeto para um dicionário para poder salvar no JSON."""
@@ -41,3 +38,4 @@ class AdminUser(User):
     """ Esta classe não precisa de alterações. """
     def __init__(self, id, name, email, password, birthdate):
         super().__init__(id, name, email, password, birthdate, is_admin=True)
+

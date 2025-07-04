@@ -11,19 +11,17 @@
             <p><strong>Data:</strong> {{ event.date }}</p>
             <p><strong>Local:</strong> {{ event.location }}</p>
             <p><strong>Capacidade:</strong> {{ len(subscribers) }} / {{ event.capacity }}</p>
-            
+
             <hr>
 
-            % if session.get('is_admin'):
-                <a href="/events/edit/{{event.id}}" class="btn btn-primary">Editar Evento</a>
-                
-                <form action="/events/delete/{{event.id}}" method="post" style="display:inline;" onsubmit="return confirm('Tem certeza que deseja excluir este evento?');">
+            % if session and session.get('is_admin'):
+                <a href="/events/edit/{{event.id}}" class="btn btn-warning">Editar Evento</a>
+                <form action="/events/delete/{{event.id}}" method="post" style="display:inline;" onsubmit="return confirm('Deseja realmente excluir este evento?');">
                     <button type="submit" class="btn btn-danger">Excluir Evento</button>
                 </form>
             % end
 
             % if session.get('user_id') and not session.get('is_admin'):
-                
                 % if is_subscribed:
                     <form action="/events/{{event.id}}/unsubscribe" method="post" style="display:inline;">
                         <button type="submit" class="btn btn-warning">Cancelar Inscrição</button>
@@ -33,11 +31,9 @@
                         <button type="submit" class="btn btn-success">Inscrever-se</button>
                     </form>
                 % end
-
             % end
-            
-            <a href="/" class="btn btn-secondary">Voltar para a lista</a>
 
+            <a href="/" class="btn btn-secondary">Voltar para a lista</a>
         </div>
     </div>
 

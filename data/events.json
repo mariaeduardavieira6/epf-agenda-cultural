@@ -1,10 +1,10 @@
 [
     {
-        "id": 1,
-        "name": "Festival de Musica",
-        "date": "2020-02-20",
-        "location": "Parque da Cidade",
-        "capacity": 300,
-        "description": "de"
+        "id": 2,
+        "name": "Galinha Pintadinha",
+        "date": "2025-09-15",
+        "location": "Casa de show infantil",
+        "capacity": 2,
+        "description": "show da galinha"
     }
 ]
