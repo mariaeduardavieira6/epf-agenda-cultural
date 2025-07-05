@@ -1,4 +1,3 @@
-# Arquivo: app.py
 import os
 from beaker.middleware import SessionMiddleware
 from bottle import Bottle, run, template, static_file, request, TEMPLATE_PATH
@@ -45,6 +44,13 @@ class App:
             reloader=self.RELOADER
         )
 
+# --- FUNÇÃO ADICIONADA AQUI ---
+def create_app():
+    """
+    Função de fábrica que cria e retorna uma instância da aplicação.
+    """
+    return App()
+
 if __name__ == "__main__":
-    app_instance = App()
+    app_instance = create_app()
     app_instance.run()

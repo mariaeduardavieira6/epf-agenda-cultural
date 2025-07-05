@@ -1,5 +1,3 @@
-# controllers/api_controller.py
-
 """
 Este controlador é responsável por expor rotas de API
 para o frontend consumir dados como categorias e estatísticas.
@@ -40,12 +38,15 @@ def setup_api_routes(app):
         Endpoint para buscar as estatísticas principais do site,
         como número de eventos, usuários e categorias.
         """
+        # --- INÍCIO DA ALTERAÇÃO ---
         stats = {
             "events": event_service.get_total_count(),
             "users": user_service.get_total_count(),
             "categories": category_service.get_all().__len__(),
-            "cities": 12 # Valor fixo por enquanto
+            # Agora busca o número real de locais únicos
+            "cities": len(event_service.get_unique_locations()) 
         }
+        # --- FIM DA ALTERAÇÃO ---
         
         response.content_type = 'application/json'
         return json.dumps(stats)
@@ -73,9 +74,8 @@ def setup_api_routes(app):
             session=request.environ.get('beaker.session')
         )
 
-    # --- ROTA FINAL ADICIONADA AQUI ---
     @app.get('/contact')
-    @view('contact_page') # Usará um novo template chamado contact_page.tpl
+    @view('contact_page')
     def page_contact():
         """Renderiza a página de 'Contato'."""
         return dict(
