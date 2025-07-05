@@ -29,30 +29,41 @@ category_icons_map = {
     "Literatura": "✍️",
     "Arte": "🎨",
     "Gastronomia": "🍽️",
-    "Esporte": "⚽"
+    "Esporte": "⚽",
+    "Arte e Exposição": "🎨"
 }
 
 def setup_api_routes(app):
     """Define as rotas de API e páginas no objeto da aplicação Bottle."""
 
     @app.get('/api/categories')
-    def get_all_categories():
+    def api_get_all_categories():
         """
         Endpoint para listar todas as categorias disponíveis.
         O frontend usará isso para popular os filtros e a seção de categorias.
         """
         categories = category_service.get_all()
-        categories_dict = [cat.to_dict() for cat in categories]
+        categories_dict = []
+        for cat in categories:
+            cat_dict = cat.to_dict()
+            cat_dict['icon'] = category_icons_map.get(cat_dict.get('name'), '❓')
+            categories_dict.append(cat_dict)
         
         response.content_type = 'application/json'
-        return json.dumps(categories_dict)
+        return json.dumps(categories_dict, ensure_ascii=False) # <-- ALTERAÇÃO AQUI
+        #categories_dict = [cat.to_dict() for cat in categories]
+        
+        #response.content_type = 'application/json'
+        #return json.dumps(categories_dict)
 
     @app.get('/api/stats')
-    def get_site_stats():
+    def api_get_site_stats():
         """
         Endpoint para buscar as estatísticas principais do site,
         como número de eventos, usuários e categorias.
         """
+        num_users = len(user_service.get_all_users()) if hasattr(user_service, 'get_all_users') else 0
+
         stats = {
             "events": event_service.get_total_count(),
             "users": user_service.get_total_count(),
@@ -61,11 +72,11 @@ def setup_api_routes(app):
         }
         
         response.content_type = 'application/json'
-        return json.dumps(stats)
+        return json.dumps(stats, ensure_ascii=False) # <-- ALTERAÇÃO AQUI
         
     # --- NOVA ROTA ADICIONADA AQUI ---
     @app.get('/api/featured-events')
-    def get_featured_events():
+    def api_get_featured_events():
         """
         Endpoint para buscar apenas os eventos marcados como destaque.
         """
@@ -74,8 +85,17 @@ def setup_api_routes(app):
         events_dict = [event.to_dict() for event in featured_events]
         
         response.content_type = 'application/json'
-        return json.dumps(events_dict)
+        return json.dumps(events_dict, ensure_ascii=False) # <-- ALTERAÇÃO AQUI
     # --- FIM DA ALTERAÇÃO ---
+
+     # Endpoint "Outros Eventos" (não em destaque)
+    @app.route('/api/other-events')
+    def api_other_events():
+        response.content_type = 'aplication/json'
+        all_events = event_service.get_all()
+        featured_ids = {event.id for event in event_service.get_featured_events()}
+        other_events = [event for event in all_events if event.id not in featured_ids]
+        return json.dumps(other_events, ensure_ascii=False) # <-- ALTERAÇÃO AQUI
 
     @app.get('/categories')
     @view('category_list')
@@ -92,13 +112,9 @@ def setup_api_routes(app):
             cat_dict['icon'] = category_icons_map.get(cat_dict.get('name'), '❓') # '❓' como fallback
             categories_with_icons.append(cat_dict)
 
-        return template('category_list', # Use template() diretamente
-                        categories=categories_with_icons,
-                        title="Todas as Categorias",
-                        session=request.environ.get('beaker.session'))
-        return dict(
-            categories=all_categories,
-            title="Todas as Categorias", # Título da página
+        return dict( # Use dict para passar os dados para o template com @view
+            categories=categories_with_icons,
+            title="Todas as Categorias",
             session=request.environ.get('beaker.session')
         )
 
