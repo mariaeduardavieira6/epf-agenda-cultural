@@ -24,13 +24,15 @@ def setup(app):
     category_service = CategoryService()
     inscription_service = InscriptionService(user_service=user_service, event_service=event_service)
 
-    # Lista eventos e filtro por categoria
-    @app.route('/')
+    # --- INÍCIO DA ALTERAÇÃO ---
+    # Agora a função também busca e filtra por cidades
     @app.route('/events')
     @view('event_list')
     def list_events():
+        # Pega todos os parâmetros de filtro da URL
         search_query = request.query.get('query', '').strip()
         category_id = request.query.get('category_id', '').strip()
+        location_filter = request.query.get('location', '').strip() # <-- Novo filtro
 
         category_name_filter = ""
         title = "Todos os Eventos"
@@ -40,17 +42,29 @@ def setup(app):
             if category:
                 category_name_filter = category.name
                 title = f"Eventos de: {category_name_filter}"
-
-        events = event_service.search_events(query=search_query, category=category_name_filter)
         
+        if location_filter:
+            title = f"Eventos em: {location_filter}"
+
+        # Usa o método de busca do serviço, agora com o filtro de cidade
+        events = event_service.search_events(
+            query=search_query, 
+            category=category_name_filter, 
+            location=location_filter # <-- Passando o filtro de cidade
+        )
+        
+        # Busca todas as categorias e cidades para os dropdowns de filtro
         all_categories = category_service.get_all()
+        all_locations = event_service.get_unique_locations()
         
         return dict(
             events=events,
             title=title,
             categories=all_categories,
+            locations=all_locations, # <-- Enviando a lista de cidades
             session=request.environ.get('beaker.session')
         )
+    # --- FIM DA ALTERAÇÃO ---
 
     # Detalhes do evento, com cálculo de vagas restantes
     @app.route('/events/<event_id:int>')
