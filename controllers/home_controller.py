@@ -8,17 +8,22 @@ from bottle import view, request
 # ALTERAÇÃO: Importando os serviços necessários
 from services.category_service import CategoryService
 from services.event_service import EventService
+from services.user_service import UserService
+from services.inscription_service import InscriptionService
+
+ # Instanciando os serviços
+category_service = CategoryService()
+event_service = EventService() # <-- Novo serviço instanciado
+
 
 def setup_home_routes(app):
     """Define a rota para a página inicial."""
     
-    # Instanciando os serviços
-    category_service = CategoryService()
-    event_service = EventService() # <-- Novo serviço instanciado
-
     @app.route('/')
-    @view('home')
+    @view('home') # Renderiza views\home.tpl
     def homepage():
+        session = request.environ.get('beaker.session')
+
         """Renderiza a página inicial e envia a lista de categorias e cidades."""
         
         # Busca todas as categorias para o dropdown de busca
@@ -32,3 +37,4 @@ def setup_home_routes(app):
             locations=all_locations, # <-- Enviando a lista de cidades
             session=request.environ.get('beaker.session')
         )
+    
