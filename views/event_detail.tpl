@@ -2,6 +2,14 @@
 % rebase('layout.tpl', title=event.name)
 
 <div class="container mt-4">
+
+    % if message:
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    % end
+
     <div class="card">
         <div class="card-header">
             <h1>{{ event.name }}</h1>
@@ -11,6 +19,7 @@
             <p><strong>Data:</strong> {{ event.date }}</p>
             <p><strong>Local:</strong> {{ event.location }}</p>
             <p><strong>Capacidade:</strong> {{ len(subscribers) }} / {{ event.capacity }}</p>
+            <p><strong>Vagas restantes:</strong> {{ remaining_slots }}</p>
 
             <hr>
 
@@ -23,13 +32,17 @@
 
             % if session.get('user_id') and not session.get('is_admin'):
                 % if is_subscribed:
-                    <form action="/events/{{event.id}}/unsubscribe" method="post" style="display:inline;">
+                    <form action="/events/{{event.id}}/unsubscribe" method="post" style="display:inline;" onsubmit="return confirm('Deseja realmente cancelar sua inscrição?');">
                         <button type="submit" class="btn btn-warning">Cancelar Inscrição</button>
                     </form>
                 % else:
-                    <form action="/events/{{event.id}}/subscribe" method="post" style="display:inline;">
-                        <button type="submit" class="btn btn-success">Inscrever-se</button>
-                    </form>
+                    % if remaining_slots > 0:
+                        <form action="/events/{{event.id}}/subscribe" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-success">Inscrever-se</button>
+                        </form>
+                    % else:
+                        <button class="btn btn-secondary" disabled>Evento lotado</button>
+                    % end
                 % end
             % end
 

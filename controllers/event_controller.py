@@ -2,7 +2,6 @@ from bottle import view, request, redirect, template
 from services.event_service import EventService
 from services.user_service import UserService
 from services.inscription_service import InscriptionService
-# --- ALTERAÇÃO: Importando o serviço de Categoria ---
 from services.category_service import CategoryService
 
 # --- Função de Validação ---
@@ -22,12 +21,10 @@ def validate_event_data(name, date, location, capacity_raw):
 def setup(app):
     event_service = EventService()
     user_service = UserService()
-    # --- ALTERAÇÃO: Instanciando o serviço de Categoria ---
     category_service = CategoryService()
     inscription_service = InscriptionService(user_service=user_service, event_service=event_service)
 
-    # --- INÍCIO DA ALTERAÇÃO PRINCIPAL ---
-    # Agora, a lista de eventos lê o category_id da URL
+    # Lista eventos e filtro por categoria
     @app.route('/')
     @app.route('/events')
     @view('event_list')
@@ -38,25 +35,24 @@ def setup(app):
         category_name_filter = ""
         title = "Todos os Eventos"
 
-        # Se um ID de categoria foi passado na URL
         if category_id:
-            # Busca a categoria pelo ID para obter o nome
             category = category_service.get_by_id(category_id)
             if category:
                 category_name_filter = category.name
                 title = f"Eventos de: {category_name_filter}"
 
-        # Usa o nome da categoria para filtrar os eventos
         events = event_service.search_events(query=search_query, category=category_name_filter)
+        
+        all_categories = category_service.get_all()
         
         return dict(
             events=events,
             title=title,
+            categories=all_categories,
             session=request.environ.get('beaker.session')
         )
-    # --- FIM DA ALTERAÇÃO PRINCIPAL ---
 
-    # Detalhes de um evento
+    # Detalhes do evento, com cálculo de vagas restantes
     @app.route('/events/<event_id:int>')
     @view('event_detail')
     def event_detail(event_id):
@@ -71,12 +67,15 @@ def setup(app):
 
         message = session.pop('message', None)
 
+        remaining_slots = event.capacity - len(subscribers) if event else 0
+
         return dict(
             event=event,
             subscribers=subscribers,
             is_subscribed=is_subscribed,
             message=message,
-            session=session
+            session=session,
+            remaining_slots=remaining_slots
         )
 
     # Inscrever usuário
@@ -105,16 +104,18 @@ def setup(app):
         session.save()
         return redirect(f'/events/{event_id}')
 
-    # Mostrar formulário de novo evento
+    # Mostrar formulário de novo evento com categorias
     @app.route('/events/new', method='GET')
     @view('event_form')
     def new_event_form():
         session = request.environ.get('beaker.session')
         if not session.get('user_name'):
             return redirect('/login')
-        return dict(event=None, action='/events/new', error=None, session=session)
+        
+        all_categories = category_service.get_all()
+        return dict(event=None, action='/events/new', error=None, session=session, categories=all_categories)
 
-    # Criar novo evento
+    # Criar novo evento com categorias e validação
     @app.route('/events/new', method='POST')
     def create_event():
         session = request.environ.get('beaker.session')
@@ -126,22 +127,23 @@ def setup(app):
         location = (request.forms.get("location") or "").strip()
         capacity_raw = (request.forms.get("capacity") or "").strip()
         description = (request.forms.get("description") or "").strip()
-        category = (request.forms.get("category") or "Geral").strip() 
+        category = (request.forms.get("category") or "Geral").strip()
 
         error, capacity = validate_event_data(name, date, location, capacity_raw)
+        all_categories = category_service.get_all()
 
         if error:
-            return template("event_form", event=None, action='/events/new', error=error, session=session)
+            return template("event_form", event=None, action='/events/new', error=error, session=session, categories=all_categories)
 
         try:
             event_service.create(name, date, location, capacity, description, category)
         except Exception as e:
             print(f"Erro ao criar evento: {e}")
-            return template("event_form", event=None, action='/events/new', error="Erro interno ao salvar o evento.", session=session)
+            return template("event_form", event=None, action='/events/new', error="Erro interno ao salvar o evento.", session=session, categories=all_categories)
 
         return redirect('/')
 
-    # Mostrar formulário de edição
+    # Mostrar formulário de edição com categorias
     @app.route('/events/edit/<event_id:int>', method='GET')
     @view('event_form')
     def edit_event_form(event_id):
@@ -150,9 +152,10 @@ def setup(app):
             return redirect('/')
 
         event = event_service.get_by_id(event_id)
-        return dict(event=event, action=f'/events/edit/{event_id}', error=None, session=session)
+        all_categories = category_service.get_all()
+        return dict(event=event, action=f'/events/edit/{event_id}', error=None, session=session, categories=all_categories)
 
-    # Atualizar evento existente
+    # Atualizar evento existente com categorias e validação
     @app.route('/events/edit/<event_id:int>', method='POST')
     def update_event(event_id):
         session = request.environ.get('beaker.session')
@@ -169,13 +172,16 @@ def setup(app):
         }
 
         updated = event_service.update(event_id, data)
+        all_categories = category_service.get_all()
+
         if not updated:
             return template(
                 "event_form",
                 event=event_service.get_by_id(event_id),
                 action=f'/events/edit/{event_id}',
                 error="Erro ao atualizar evento.",
-                session=session
+                session=session,
+                categories=all_categories
             )
 
         return redirect(f'/events/{event_id}')

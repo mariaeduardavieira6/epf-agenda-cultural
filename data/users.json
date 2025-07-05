@@ -14,5 +14,13 @@
         "password": "12345",
         "birthdate": "2003-08-22",
         "is_admin": false
+    },
+    {
+        "id": 3,
+        "name": "maria",
+        "email": "maria@gmail.com",
+        "password": "maria",
+        "birthdate": "2002-12-07",
+        "is_admin": false
     }
 ]

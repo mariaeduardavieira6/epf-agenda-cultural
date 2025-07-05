@@ -1,47 +1,56 @@
 [
-  {
-    "id": 1,
-    "name": "Show de Rock Clássico",
-    "date": "2025-08-15",
-    "location": "Estádio Municipal",
-    "capacity": 5000,
-    "description": "Uma noite com os maiores sucessos do rock.",
-    "category": "Música"
-  },
-  {
-    "id": 2,
-    "name": "Peça Teatral: O Auto da Compadecida",
-    "date": "2025-08-20",
-    "location": "Teatro Central",
-    "capacity": 300,
-    "description": "A aclamada peça de Ariano Suassuna.",
-    "category": "Teatro"
-  },
-  {
-    "id": 3,
-    "name": "Exposição de Arte Moderna",
-    "date": "2025-09-01",
-    "location": "Museu de Arte",
-    "capacity": 150,
-    "description": "Obras de artistas renomados do século XX.",
-    "category": "Arte e Exposição"
-  },
-  {
-    "id": 4,
-    "name": "Festival de Cinema Francês",
-    "date": "2025-09-10",
-    "location": "Cine Cultura",
-    "capacity": 100,
-    "description": "Uma seleção dos melhores filmes franceses do ano.",
-    "category": "Cinema"
-  },
-  {
-    "id": 5,
-    "name": "Feira Gastronômica Sabores do Brasil",
-    "date": "2025-09-20",
-    "location": "Praça Central",
-    "capacity": 1000,
-    "description": "Experimente pratos típicos de todas as regiões do Brasil.",
-    "category": "Gastronomia"
-  }
+    {
+        "id": 1,
+        "name": "Show de Rock Cl\u00e1ssico",
+        "date": "2025-08-15",
+        "location": "Est\u00e1dio Municipal",
+        "capacity": 5000,
+        "description": "Uma noite com os maiores sucessos do rock.",
+        "category": "M\u00fasica"
+    },
+    {
+        "id": 2,
+        "name": "Pe\u00e7a Teatral: O Auto da Compadecida",
+        "date": "2025-08-20",
+        "location": "Teatro Central",
+        "capacity": 300,
+        "description": "A aclamada pe\u00e7a de Ariano Suassuna.",
+        "category": "Teatro"
+    },
+    {
+        "id": 3,
+        "name": "Exposi\u00e7\u00e3o de Arte Moderna",
+        "date": "2025-09-01",
+        "location": "Museu de Arte",
+        "capacity": 150,
+        "description": "Obras de artistas renomados do s\u00e9culo XX.",
+        "category": "Arte e Exposi\u00e7\u00e3o"
+    },
+    {
+        "id": 4,
+        "name": "Festival de Cinema Franc\u00eas",
+        "date": "2025-09-10",
+        "location": "Cine Cultura",
+        "capacity": 100,
+        "description": "Uma sele\u00e7\u00e3o dos melhores filmes franceses do ano.",
+        "category": "Cinema"
+    },
+    {
+        "id": 5,
+        "name": "Feira Gastron\u00f4mica Sabores do Brasil",
+        "date": "2025-09-20",
+        "location": "Pra\u00e7a Central",
+        "capacity": 1000,
+        "description": "Experimente pratos t\u00edpicos de todas as regi\u00f5es do Brasil.",
+        "category": "Gastronomia"
+    },
+    {
+        "id": 6,
+        "name": "Concerto Acústico ao Entardecer",
+        "date": "2025-07-07",
+        "location": "Praça Central da Cidade",
+        "capacity": 1,
+        "description": "Uma experiência musical ao ar livre com artistas locais e repertório de MPB, folk e instrumental.",
+        "category": "Música"
+    }
 ]
