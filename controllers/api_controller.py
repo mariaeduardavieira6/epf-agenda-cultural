@@ -5,7 +5,7 @@ Este controlador é responsável por expor rotas de API
 para o frontend consumir dados como categorias e estatísticas.
 """
 
-from bottle import response, view, request
+from bottle import response, view, request, template
 import json
 
 # Importa todos os serviços necessários
@@ -17,6 +17,20 @@ from services.category_service import CategoryService
 event_service = EventService()
 user_service = UserService()
 category_service = CategoryService()
+
+# Mapeamento de nomes de categoria para ícones emoji
+category_icons_map = {
+    "Música": "🎵",
+    "Teatro": "🎭",
+    "Exposição": "🖼️",
+    "Curso": "📚",
+    "Cinema": "🎬",
+    "Dança": "💃",
+    "Literatura": "✍️",
+    "Arte": "🎨",
+    "Gastronomia": "🍽️",
+    "Esporte": "⚽"
+}
 
 def setup_api_routes(app):
     """Define as rotas de API e páginas no objeto da aplicação Bottle."""
@@ -71,6 +85,17 @@ def setup_api_routes(app):
         para serem exibidas em uma página HTML.
         """
         all_categories = category_service.get_all()
+        # Adiciona o ícone a cada objeto de categoria antes de passar para o template
+        categories_with_icons = []
+        for cat in all_categories:
+            cat_dict = cat.to_dict() # Converte para dicionário se for um objeto
+            cat_dict['icon'] = category_icons_map.get(cat_dict.get('name'), '❓') # '❓' como fallback
+            categories_with_icons.append(cat_dict)
+
+        return template('category_list', # Use template() diretamente
+                        categories=categories_with_icons,
+                        title="Todas as Categorias",
+                        session=request.environ.get('beaker.session'))
         return dict(
             categories=all_categories,
             title="Todas as Categorias", # Título da página

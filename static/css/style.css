@@ -218,6 +218,9 @@ a:hover {
     justify-content: center;
     align-items: center;
     height: 100%; /* Garantir que todos os cartões tenham a mesma altura */
+    position: relative; /*Permite o posicionamento absoluto do link */
+    text-decoration: none; /* Adicionado: Remove sublinhado padrão do link do card */
+    color: inherit; /* Adicionado: Garante que a cor do texto seja herdada */
 }
 
 .category-card:hover {
@@ -225,6 +228,34 @@ a:hover {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     border-color: var(--blue-marble);
 }
+
+/* Estilo para fazer o link dentro do card ocupar a área inteira*/
+.category-card a {
+    display: block; /* Transforma o link em um bloco para ocupar espaço */
+    width: 100%; /* Ocupa toda a largura do pai */
+    height: 100%; /* Ocupa toda a altura do pai */
+    position: absolute; /* Posiciona absolutamente dentro do card */
+    top: 0;
+    left: 0;
+    text-indent: -9999px; /* Esconde o texto original do link 'a' */
+    overflow: hidden; /* Garante que o texto escondido não seja visível */
+    z-index: 1; /* Garante que o link esteja acima de outros elementos dentro do card */
+}
+
+
+/* Garante que o conteúdo visual do card esteja acima do link invisível */
+.category-card .category-icon,
+.category-card h3,
+.category-card p {
+    position: relative;
+    z-index: 2; /* Acima do link 'a' */
+}
+
+/* Para o hover do título dentro do card, se a tag 'a' estiver dentro do h3 */
+.category-card:hover h3 a {
+    color: var(--crimson-blaze) !important; /* Força a cor no hover do card */
+}
+
 
 .category-icon {
     font-size: 3rem;
