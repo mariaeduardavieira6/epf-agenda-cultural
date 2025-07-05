@@ -1,3 +1,5 @@
+# controllers/api_controller.py
+
 """
 Este controlador é responsável por expor rotas de API
 para o frontend consumir dados como categorias e estatísticas.
@@ -26,7 +28,6 @@ def setup_api_routes(app):
         O frontend usará isso para popular os filtros e a seção de categorias.
         """
         categories = category_service.get_all()
-        # Converte a lista de objetos Category para uma lista de dicionários
         categories_dict = [cat.to_dict() for cat in categories]
         
         response.content_type = 'application/json'
@@ -38,18 +39,29 @@ def setup_api_routes(app):
         Endpoint para buscar as estatísticas principais do site,
         como número de eventos, usuários e categorias.
         """
-        # --- INÍCIO DA ALTERAÇÃO ---
         stats = {
             "events": event_service.get_total_count(),
             "users": user_service.get_total_count(),
             "categories": category_service.get_all().__len__(),
-            # Agora busca o número real de locais únicos
             "cities": len(event_service.get_unique_locations()) 
         }
-        # --- FIM DA ALTERAÇÃO ---
         
         response.content_type = 'application/json'
         return json.dumps(stats)
+        
+    # --- NOVA ROTA ADICIONADA AQUI ---
+    @app.get('/api/featured-events')
+    def get_featured_events():
+        """
+        Endpoint para buscar apenas os eventos marcados como destaque.
+        """
+        featured_events = event_service.get_featured_events()
+        # Converte a lista de objetos Event para uma lista de dicionários
+        events_dict = [event.to_dict() for event in featured_events]
+        
+        response.content_type = 'application/json'
+        return json.dumps(events_dict)
+    # --- FIM DA ALTERAÇÃO ---
 
     @app.get('/categories')
     @view('category_list')

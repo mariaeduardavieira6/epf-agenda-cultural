@@ -3,70 +3,98 @@
     "id": 1,
     "name": "Show de Rock Clássico",
     "date": "2025-08-15",
+    "time": "20:00",
     "location": "Estádio Municipal",
     "capacity": 5000,
     "description": "Uma noite com os maiores sucessos do rock.",
     "category": "Música",
-    "price": 50.0
+    "price": 50.0,
+    "image_url": "https://placehold.co/600x400/E58A5A/FFFFFF?text=Show+de+Rock",
+    "rating": 4.8,
+    "is_featured": true
   },
   {
     "id": 2,
     "name": "Peça Teatral: O Auto da Compadecida",
     "date": "2025-08-20",
+    "time": "19:30",
     "location": "Teatro Central",
     "capacity": 300,
     "description": "A aclamada peça de Ariano Suassuna.",
     "category": "Teatro",
-    "price": 30.0
+    "price": 30.0,
+    "image_url": "https://placehold.co/600x400/5a9be5/FFFFFF?text=Teatro",
+    "rating": 4.9,
+    "is_featured": false
   },
   {
     "id": 3,
     "name": "Exposição de Arte Moderna",
     "date": "2025-09-01",
+    "time": "10:00",
     "location": "Museu de Arte",
     "capacity": 150,
     "description": "Obras de artistas renomados do século XX.",
     "category": "Arte e Exposição",
-    "price": 0.0
+    "price": 0.0,
+    "image_url": "https://placehold.co/600x400/e55a89/FFFFFF?text=Arte",
+    "rating": 4.7,
+    "is_featured": true
   },
   {
     "id": 4,
     "name": "Festival de Cinema Francês",
     "date": "2025-09-10",
+    "time": "18:00",
     "location": "Cine Cultura",
     "capacity": 100,
     "description": "Uma seleção dos melhores filmes franceses do ano.",
     "category": "Cinema",
-    "price": 15.0
+    "price": 15.0,
+    "image_url": "https://placehold.co/600x400/895ae5/FFFFFF?text=Cinema",
+    "rating": 4.6,
+    "is_featured": false
   },
   {
     "id": 5,
     "name": "Feira Gastronômica Sabores do Brasil",
     "date": "2025-09-20",
+    "time": "12:00",
     "location": "Praça Central",
     "capacity": 1000,
     "description": "Experimente pratos típicos de todas as regiões do Brasil.",
     "category": "Gastronomia",
-    "price": 0.0
+    "price": 0.0,
+    "image_url": "https://placehold.co/600x400/5ae58a/FFFFFF?text=Gastronomia",
+    "rating": 4.9,
+    "is_featured": false
   },
   {
     "id": 6,
     "name": "Concerto de Jazz ao Vivo (Evento de Hoje)",
     "date": "2025-07-04",
+    "time": "21:00",
     "location": "Teatro Central",
     "capacity": 150,
     "description": "Uma noite relaxante com os melhores músicos de jazz da cidade.",
     "category": "Música",
-    "price": 40.0
+    "price": 40.0,
+    "image_url": "https://placehold.co/600x400/e5d95a/FFFFFF?text=Jazz",
+    "rating": 4.8,
+    "is_featured": false
   },
   {
     "id": 7,
     "name": "Oficina de Pintura (Evento do Fim de Semana)",
     "date": "2025-07-05",
+    "time": "14:00",
     "location": "Museu de Arte",
     "capacity": 30,
     "description": "Aprenda técnicas de pintura a óleo com artistas locais.",
     "category": "Arte e Exposição",
-    "price": 0.0
+    "price": 0.0,
+    "image_url": "https://placehold.co/600x400/e55a5a/FFFFFF?text=Oficina",
+    "rating": 4.5,
+    "is_featured": false
   }
 ]

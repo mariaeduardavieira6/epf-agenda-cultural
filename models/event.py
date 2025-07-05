@@ -1,7 +1,7 @@
 # models/event.py
 
 """
-Este arquivo define a classe que representa a entidade de um evento na aplicação,
+Este ficheiro define a classe que representa a entidade de um evento na aplicação,
 cumprindo o papel da camada "Model" na arquitetura MVC.
 """
 
@@ -10,8 +10,9 @@ class Event:
     Representa a entidade de um evento cultural no sistema.
     Define os atributos e comportamentos essenciais de um evento.
     """
-    # --- ALTERAÇÃO AQUI: Adicionado 'price' no construtor ---
-    def __init__(self, id, name, date, location, capacity, description="", category="", price=0.0):
+    # --- ALTERAÇÃO AQUI: Adicionados novos campos para a funcionalidade de destaque ---
+    def __init__(self, id, name, date, location, capacity, description="", category="", price=0.0, 
+                 time="00:00", image_url="", rating=0.0, is_featured=False):
         """
         Construtor da classe Event.
 
@@ -24,6 +25,10 @@ class Event:
             description (str, optional): Uma descrição mais detalhada do evento.
             category (str, optional): A categoria do evento (ex: "Música", "Teatro").
             price (float, optional): O preço do ingresso. Padrão é 0.0 (gratuito).
+            time (str, optional): A hora do evento.
+            image_url (str, optional): O URL da imagem de capa do evento.
+            rating (float, optional): A classificação do evento (0.0 a 5.0).
+            is_featured (bool, optional): Se o evento é um destaque na homepage.
         """
         self.id = id
         self.name = name
@@ -32,8 +37,12 @@ class Event:
         self.capacity = capacity
         self.description = description
         self.category = category
-        # --- NOVO ATRIBUTO ---
         self.price = float(price)
+        # --- NOVOS ATRIBUTOS ---
+        self.time = time
+        self.image_url = image_url
+        self.rating = float(rating)
+        self.is_featured = bool(is_featured)
 
     def to_dict(self):
         """
@@ -48,6 +57,10 @@ class Event:
             "capacity": self.capacity,
             "description": self.description,
             "category": self.category,
-            # --- NOVO CAMPO NO DICIONÁRIO ---
-            "price": self.price
+            "price": self.price,
+            # --- NOVOS CAMPOS NO DICIONÁRIO ---
+            "time": self.time,
+            "image_url": self.image_url,
+            "rating": self.rating,
+            "is_featured": self.is_featured
         }
