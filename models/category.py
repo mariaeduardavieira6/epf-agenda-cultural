@@ -28,3 +28,15 @@ class Category:
             "name": self.name,
             "icon": self.icon
         }
+    
+    @staticmethod # <-- ESSA LINHA É CRÍTICA!
+    def from_dict(data):
+        """
+        Cria um objeto Category a partir de um dicionário.
+        Útil para carregar dados do JSON.
+        """
+        return Category(
+            id=data.get('id'),
+            name=data.get('name'),
+            icon=data.get('icon', '') # Garante que 'icon' seja um valor padrão se não existir
+        )
