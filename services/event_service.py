@@ -23,7 +23,8 @@ class EventService:
 
     def _load_events(self):
         """Método privado para carregar a lista de eventos do ficheiro JSON."""
-        with open(self.filepath, 'r', encoding='utf-8-sig') as f:
+        # Use 'utf-8-sig' para lidar com Byte Order Mark (BOM) se ele existir
+        with open(self.filepath, 'r', encoding='utf-8-sig') as f: # <-- ALTERAÇÃO AQUI
             try:
                 data = json.load(f)
                 if not isinstance(data, list):
@@ -34,8 +35,9 @@ class EventService:
 
     def _save_events(self, events):
         """Método privado para salvar a lista de eventos no ficheiro JSON."""
-        with open(self.filepath, 'w', encoding='utf-8') as f:
-            json.dump([e.to_dict() for e in events], f, indent=4)
+         # Use 'utf-8' e 'ensure_ascii=False' para salvar caracteres especiais corretamente
+        with open(self.filepath, 'w', encoding='utf-8') as f: # <-- ALTERAÇÃO AQUI
+            json.dump([e.to_dict() for e in events], f, indent=4, ensure_ascii=False) # <-- ALTERAÇÃO AQUI
 
     def get_all(self):
         """Retorna uma lista com todos os eventos."""
@@ -158,4 +160,10 @@ class EventService:
 
     def get_unique_locations(self):
         """Retorna uma lista de cidades (locations) únicas e ordenadas."""
-        return sorted({event.location for event in self._load_events() if event.location})
+        #return sorted({event.location for event in self._load_events() if event.location})
+        events = self._load_events()
+        locations = set()
+        for event_data in events:
+           if event_data.location: # Acessar o atributo 'location' do objeto Event
+               locations.add(event_data.location)
+        return sorted(list(locations)) 
