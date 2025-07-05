@@ -10,8 +10,8 @@ class Event:
     Representa a entidade de um evento cultural no sistema.
     Define os atributos e comportamentos essenciais de um evento.
     """
-    # AQUI ESTÁ A CORREÇÃO: Adicionamos 'category' no construtor
-    def __init__(self, id, name, date, location, capacity, description="", category=""):
+    # --- ALTERAÇÃO AQUI: Adicionado 'price' no construtor ---
+    def __init__(self, id, name, date, location, capacity, description="", category="", price=0.0):
         """
         Construtor da classe Event.
 
@@ -23,6 +23,7 @@ class Event:
             capacity (int): A capacidade máxima de participantes.
             description (str, optional): Uma descrição mais detalhada do evento.
             category (str, optional): A categoria do evento (ex: "Música", "Teatro").
+            price (float, optional): O preço do ingresso. Padrão é 0.0 (gratuito).
         """
         self.id = id
         self.name = name
@@ -30,7 +31,9 @@ class Event:
         self.location = location
         self.capacity = capacity
         self.description = description
-        self.category = category # <-- Atribuindo a categoria
+        self.category = category
+        # --- NOVO ATRIBUTO ---
+        self.price = float(price)
 
     def to_dict(self):
         """
@@ -44,5 +47,7 @@ class Event:
             "location": self.location,
             "capacity": self.capacity,
             "description": self.description,
-            "category": self.category # <-- Adicionando a categoria ao dicionário
+            "category": self.category,
+            # --- NOVO CAMPO NO DICIONÁRIO ---
+            "price": self.price
         }

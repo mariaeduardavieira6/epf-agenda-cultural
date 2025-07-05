@@ -1,47 +1,65 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>{{'Editar Evento' if event else 'Novo Evento'}}</title>
-</head>
-<body>
-    <h1>{{'Editar Evento' if event else 'Criar Novo Evento'}}</h1>
+% rebase('layout.tpl', title='Editar Evento' if event else 'Novo Evento', categories=categories)
 
-    % if error:
-        <p style="color:red;">{{error}}</p>
-    % end
+<div class="card">
+    <div class="card-header">
+        <h1>{{'Editar Evento' if event else 'Criar Novo Evento'}}</h1>
+    </div>
+    <div class="card-body">
+        % if error:
+            <div class="alert alert-danger">{{error}}</div>
+        % end
 
-    <form action="{{'/events/edit/' + str(event.id) if event else '/events/new'}}" method="post">
-        <label>Nome do Evento:</label><br>
-        <input type="text" name="name" value="{{event.name if event else ''}}" required><br><br>
+        <form action="{{'/events/edit/' + str(event.id) if event else '/events/new'}}" method="post">
+            <div class="mb-3">
+                <label for="name" class="form-label">Nome do Evento:</label>
+                <input type="text" id="name" name="name" class="form-control" value="{{event.name if event else ''}}" required>
+            </div>
 
-        <label>Descrição:</label><br>
-        <textarea name="description" required>{{event.description if event else ''}}</textarea><br><br>
+            <div class="mb-3">
+                <label for="description" class="form-label">Descrição:</label>
+                <textarea id="description" name="description" class="form-control" rows="4" required>{{event.description if event else ''}}</textarea>
+            </div>
 
-        <label>Data:</label><br>
-        <input type="date" name="date" value="{{event.date if event else ''}}" required><br><br>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="date" class="form-label">Data:</label>
+                    <input type="date" id="date" name="date" class="form-control" value="{{event.date if event else ''}}" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="location" class="form-label">Local:</label>
+                    <input type="text" id="location" name="location" class="form-control" value="{{event.location if event else ''}}" required>
+                </div>
+            </div>
 
-        <label>Local:</label><br>
-        <input type="text" name="location" value="{{event.location if event else ''}}" required><br><br>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="capacity" class="form-label">Capacidade:</label>
+                    <input type="number" id="capacity" name="capacity" class="form-control" value="{{event.capacity if event else ''}}" min="1" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="category" class="form-label">Categoria:</label>
+                    <select id="category" name="category" class="form-select" required>
+                        % for cat in categories:
+                            % if event and event.category == cat.name:
+                                <option value="{{cat.name}}" selected>{{cat.name}}</option>
+                            % else:
+                                <option value="{{cat.name}}">{{cat.name}}</option>
+                            % end
+                        % end
+                    </select>
+                </div>
+                <!-- INÍCIO DA ALTERAÇÃO: Campo de Preço -->
+                <div class="col-md-4 mb-3">
+                    <label for="price" class="form-label">Preço (R$):</label>
+                    <input type="number" id="price" name="price" class="form-control" value="{{event.price if event else '0.00'}}" min="0" step="0.01" required>
+                </div>
+                <!-- FIM DA ALTERAÇÃO -->
+            </div>
 
-        <label>Capacidade:</label><br>
-        <input type="number" name="capacity" value="{{event.capacity if event else ''}}" min="1" required><br><br>
+            <hr>
 
-        <label>Categoria:</label><br>
-        <select name="category" required>
-            % for cat in categories:
-                % if event and event.category == cat.name:
-                    <option value="{{cat.name}}" selected>{{cat.name}}</option>
-                % else:
-                    <option value="{{cat.name}}">{{cat.name}}</option>
-                % end
-            % end
-        </select>
-        <br><br>
-
-        <button type="submit">Salvar</button>
-    </form>
-
-    <p><a href="/">Voltar para a lista de eventos</a></p>
-</body>
-</html>
+            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+            <a href="/events" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>

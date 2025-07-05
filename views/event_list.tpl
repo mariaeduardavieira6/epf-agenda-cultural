@@ -1,5 +1,16 @@
 % rebase('layout.tpl', title='Eventos', categories=categories, locations=locations)
 
+<style>
+    /* Estilo para os botões de busca rápida */
+    .quick-search {
+        margin-top: 20px;
+        text-align: center;
+    }
+    .quick-search .btn {
+        margin: 0 5px;
+    }
+</style>
+
 <h1>{{ title or 'Eventos Cadastrados' }}</h1>
 
 <!-- Formulário de Busca -->
@@ -20,7 +31,6 @@
                 </select>
             </div>
             <div class="col-md-3">
-                <!-- ALTERAÇÃO AQUI: Trocando 'Cidade' por 'Local' -->
                 <label for="location" class="form-label">Local</label>
                 <select name="location" id="location" class="form-select">
                     <option value="">Todos</option>
@@ -33,6 +43,15 @@
                 <button type="submit" class="btn btn-primary w-100">Buscar</button>
             </div>
         </form>
+
+        <!-- INÍCIO DA ALTERAÇÃO: Adicionado o botão "Gratuitos" -->
+        <div class="quick-search">
+            <span class="me-2">Busca rápida:</span>
+            <a href="/events?filter=today" class="btn btn-outline-secondary btn-sm">Hoje</a>
+            <a href="/events?filter=weekend" class="btn btn-outline-secondary btn-sm">Este fim de semana</a>
+            <a href="/events?filter=free" class="btn btn-outline-secondary btn-sm">Gratuitos</a>
+        </div>
+        <!-- FIM DA ALTERAÇÃO -->
     </div>
 </div>
 

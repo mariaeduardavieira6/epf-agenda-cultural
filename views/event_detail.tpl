@@ -21,6 +21,17 @@
             <p><strong>Capacidade:</strong> {{ len(subscribers) }} / {{ event.capacity }}</p>
             <p><strong>Vagas restantes:</strong> {{ remaining_slots }}</p>
 
+            <!-- INÍCIO DA ALTERAÇÃO: Exibição do Preço -->
+            <p>
+                <strong>Preço:</strong>
+                % if event.price > 0:
+                    R$ {{ '%.2f' % event.price }}
+                % else:
+                    Gratuito
+                % end
+            </p>
+            <!-- FIM DA ALTERAÇÃO -->
+
             <hr>
 
             % if session and session.get('is_admin'):

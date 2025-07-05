@@ -4,6 +4,7 @@ negócio e persistência de dados para os eventos, manipulando o arquivo data/ev
 import json
 import os
 from models.event import Event
+from datetime import date, timedelta
 
 class EventService:
     """
@@ -22,7 +23,6 @@ class EventService:
 
     def _load_events(self):
         """Método privado para carregar a lista de eventos do arquivo JSON."""
-        # Usando 'utf-8-sig' para lidar com possíveis BOM (Byte Order Mark) no início do arquivo
         with open(self.filepath, 'r', encoding='utf-8-sig') as f:
             try:
                 data = json.load(f)
@@ -52,51 +52,55 @@ class EventService:
                 return event
         return None
     
-    # --- ALTERAÇÃO AQUI: Adicionando o filtro de 'location' ---
-    def search_events(self, query="", category="", location=""):
+    def search_events(self, query="", category="", location="", time_filter=""):
         """
-        Busca e filtra eventos por nome, categoria e/ou localização.
+        Busca e filtra eventos por nome, categoria, localização e/ou período de tempo.
         """
         events = self.get_all()
         
         if query:
-            events = [
-                event for event in events 
-                if query.lower() in event.name.lower()
-            ]
+            events = [e for e in events if query.lower() in e.name.lower()]
         
         if category:
-            events = [
-                event for event in events
-                if event.category and event.category.lower() == category.lower()
-            ]
+            events = [e for e in events if e.category and e.category.lower() == category.lower()]
             
-        # --- NOVO FILTRO DE CIDADE ---
         if location:
-            events = [
-                event for event in events
-                if event.location and event.location.lower() == location.lower()
-            ]
+            events = [e for e in events if e.location and e.location.lower() == location.lower()]
+
+        if time_filter:
+            today = date.today()
+            
+            if time_filter == 'today':
+                events = [e for e in events if date.fromisoformat(e.date) == today]
+
+            elif time_filter == 'weekend':
+                weekday = today.weekday()
+                if weekday <= 4:
+                    friday = today + timedelta(days=(4 - weekday))
+                else:
+                    friday = today - timedelta(days=(weekday - 4))
+                weekend_dates = [friday, friday + timedelta(days=1), friday + timedelta(days=2)]
+                events = [e for e in events if date.fromisoformat(e.date) in weekend_dates]
+            
+            # --- NOVO FILTRO DE EVENTOS GRATUITOS ---
+            elif time_filter == 'free':
+                events = [e for e in events if e.price == 0.0]
             
         return events
 
-    def create(self, name, date, location, capacity, description, category):
+    # --- ALTERAÇÃO: Adicionando 'price' ao método de criação ---
+    def create(self, name, date, location, capacity, description, category, price=0.0):
         """
-        Cria um novo evento, agora incluindo a categoria, e o salva no arquivo.
+        Cria um novo evento, agora incluindo a categoria e o preço, e o salva no arquivo.
         """
         events = self._load_events()
         new_id = max((event.id for event in events), default=0) + 1
         
         new_event = Event(
-            id=new_id,
-            name=name,
-            date=date,
-            location=location,
-            capacity=int(capacity),
-            description=description,
-            category=category
+            id=new_id, name=name, date=date, location=location,
+            capacity=int(capacity), description=description, category=category,
+            price=float(price) # <-- Adicionado o preço
         )
-
         events.append(new_event)
         self._save_events(events)
         return new_event
@@ -113,6 +117,8 @@ class EventService:
                 event.capacity = int(data.get('capacity', event.capacity))
                 event.description = data.get('description', event.description)
                 event.category = data.get('category', event.category)
+                # --- ALTERAÇÃO: Adicionando a atualização de 'price' ---
+                event.price = float(data.get('price', event.price))
                 event_found = True
                 break
         
@@ -133,19 +139,12 @@ class EventService:
         
     def get_total_count(self):
         """Retorna o número total de eventos cadastrados."""
-        events = self._load_events()
-        return len(events)
+        return len(self._load_events())
 
     def get_total_categories(self):
         """Retorna o número total de categorias de eventos distintas."""
-        events = self._load_events()
-        unique_categories = {event.category for event in events if event.category}
-        return len(unique_categories)
+        return len({event.category for event in events if event.category})
 
-    # --- NOVO MÉTODO ADICIONADO AQUI ---
     def get_unique_locations(self):
         """Retorna uma lista de cidades (locations) únicas e ordenadas."""
-        events = self._load_events()
-        # Usa um conjunto (set) para pegar apenas localizações únicas e depois ordena
-        unique_locations = sorted({event.location for event in events if event.location})
-        return unique_locations
+        return sorted({event.location for event in self._load_events() if event.location})
