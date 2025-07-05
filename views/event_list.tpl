@@ -9,12 +9,96 @@
     .quick-search .btn {
         margin: 0 5px;
     }
+
+    /* Novos estilos para os cards de eventos */
+    .event-card {
+        background-color: var(--white);
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        height: 100%; /* Garante que todos os cards tenham a mesma altura */
+        display: flex;
+        flex-direction: column;
+        overflow: hidden; /* Garante que nada saia dos limites do card */
+        position: relative; /* Para posicionamento absoluto de elementos internos se necessário */
+    }
+
+    .event-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .event-card-img {
+        width: 100%;
+        height: 180px; /* Altura fixa para as imagens */
+        object-fit: cover; /* Garante que a imagem cubra a área sem distorcer */
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+    }
+
+    .event-card-body {
+        padding: 1.5rem;
+        flex-grow: 1; /* Faz o corpo do card ocupar o espaço restante */
+        display: flex;
+        flex-direction: column;
+    }
+
+    .event-card-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--cosmos-blue);
+        margin-bottom: 0.75rem;
+    }
+
+    .event-card-meta {
+        font-size: 0.95rem;
+        color: var(--blue-marble);
+        margin-bottom: 0.5rem;
+    }
+
+    .event-card-description {
+        font-size: 1rem;
+        color: var(--cosmos-blue);
+        line-height: 1.5;
+        margin-bottom: 1rem;
+        flex-grow: 1; /* Permite que a descrição ocupe o espaço */
+    }
+
+    .event-card-footer {
+        padding: 1rem 1.5rem;
+        border-top: 1px solid rgba(0, 48, 73, 0.05);
+        background-color: var(--light-beige);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .event-card-price {
+        font-weight: 700;
+        color: var(--crimson-blaze);
+        font-size: 1.1rem;
+    }
+
+    .event-card-link {
+        color: var(--crimson-blaze);
+        font-weight: 600;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .event-card-link:hover {
+        color: var(--gochujang-red);
+    }
+
+    .admin-actions .btn {
+        margin-right: 0.5rem; /* Espaçamento entre os botões de admin */
+    }
 </style>
 
-<h1>{{ title or 'Eventos Cadastrados' }}</h1>
+<h1 class="display-4 fw-bold mb-4 text-center text-cosmos-blue">{{ title or 'Eventos Cadastrados' }}</h1>
 
 <!-- Formulário de Busca -->
-<div class="search-bar card mb-4">
+<div class="search-bar card mb-4 shadow-sm">
     <div class="card-body">
         <form action="/events" method="GET" class="row g-3 align-items-end">
             <div class="col-md-4">
@@ -57,39 +141,53 @@
 
 
 % if not events:
-  <p>Nenhum evento encontrado.</p>
+    <p class="text-center text-muted mt-5">Nenhum evento encontrado.</p>
 % else:
-  <ul class="event-list list-group">
-  % for event in events:
-    <li class="event-item list-group-item">
-      <strong>{{event.name}}</strong><br>
-      Data: {{event.date}}<br>
-      Local: {{event.location}}<br>
-      
-      Descrição: {{event.description}}<br>
-      
-      <a href="/events/{{event.id}}">Ver detalhes</a>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    % for event in events:
+        <div class="col">
+            <div class="event-card shadow">
+                <img src="https://via.placeholder.com/400x180?text=Evento" class="event-card-img" alt="Imagem do Evento">
 
-      <!-- Bloco que adiciona os botões de Editar e Excluir para o admin -->
-      % if session and session.get('is_admin'):
-        <div class="admin-actions" style="margin-top: 5px;">
-          <a href="/events/edit/{{event.id}}" class="admin-link">Editar</a>
-          
-          <!-- O botão de excluir fica dentro de um formulário por segurança -->
-          <form action="/events/delete/{{event.id}}" method="POST" style="display: inline; margin-left: 10px;">
-            <button type="submit" class="admin-link-delete" onclick="return confirm('Tem certeza que deseja excluir este evento?');">Excluir</button>
-          </form>
+                <div class="event-card-body">
+                    <h3 class="event-card-title">{{event.name}}</h3>
+                    <p class="event-card-meta">
+                        🗓️ {{event.date}} <br>
+                        📍 {{event.location}} <br>
+                        Categoría: {{event.category}}
+                    </p>
+                    <p class="event-card-description">
+                        {{event.description[:100] + '...' if len(event.description) > 100 else event.description}}
+                    </p>
+                </div>
+
+                <div class="event-card-footer">
+                    <span class="event-card-price">
+                        % if event.price > 0:
+                            R$ {{ '%.2f' % event.price }}
+                        % else:
+                            Gratuito
+                        % end
+                    </span>
+                    <div>
+                        <a href="/events/{{event.id}}" class="event-card-link">Ver detalhes</a>
+
+                        % if session and session.get('is_admin'):
+                            <a href="/events/edit/{{event.id}}" class="btn btn-sm btn-warning ms-2">Editar</a>
+                            <form action="/events/delete/{{event.id}}" method="POST" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja excluir este evento?');">
+                                <button type="submit" class="btn btn-sm btn-danger ms-2">Excluir</button>
+                            </form>
+                        % end
+                    </div>
+                </div>
+            </div>
         </div>
-      % end
-
-    </li>
-  % end
-  </ul>
+    % end
+    </div>
 % end
 
-<br>
 % if session and session.get('is_admin'):
-  <div class="text-center mt-4">
-      <a href="/events/new" class="btn btn-primary">Criar Novo Evento</a>
-  </div>
+    <div class="text-center mt-5 mb-4">
+        <a href="/events/new" class="btn btn-primary btn-lg">Criar Novo Evento</a>
+    </div>
 % end

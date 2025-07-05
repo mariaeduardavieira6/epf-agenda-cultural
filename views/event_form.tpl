@@ -55,6 +55,11 @@
                 </div>
                 <!-- FIM DA ALTERAÇÃO -->
             </div>
+            <div class="mb-3">
+    <label for="image_url" class="form-label">URL da Imagem (opcional):</label>
+    <input type="url" class="form-control" id="image_url" name="image_url" value="{{ event.image_url if event else '' }}" placeholder="Ex: https://example.com/imagem-do-evento.jpg">
+    <div class="form-text text-muted">Cole aqui o link direto para a imagem do evento. Esta imagem será exibida na listagem e na página de detalhes.</div>
+</div>
 
             <hr>
 

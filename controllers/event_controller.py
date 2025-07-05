@@ -152,7 +152,7 @@ def setup(app):
         description = (request.forms.get("description") or "").strip()
         category = (request.forms.get("category") or "Geral").strip()
         price = (request.forms.get("price") or "0.0").strip()
-
+        image_url = (request.forms.get("image_url") or "").strip()
         error, capacity = validate_event_data(name, date, location, capacity_raw)
         all_categories = category_service.get_all()
 
