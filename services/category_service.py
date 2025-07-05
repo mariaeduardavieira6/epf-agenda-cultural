@@ -29,14 +29,18 @@ class CategoryService:
 
     def _load_categories(self):
         """Método privado para carregar a lista de categorias do arquivo JSON."""
-        with open(self.filepath, 'r', encoding='utf-8') as f:
-            try:
+        try:
+            with open(self.filepath, 'r', encoding='utf-8-sig') as f: # <-- ALTERAÇÃO AQUI
                 data = json.load(f)
-                # Converte cada dicionário da lista em um objeto Category
-                return [Category(**item) for item in data]
-            except json.JSONDecodeError:
-                # Retorna lista vazia se o JSON estiver corrompido ou vazio
-                return []
+                if not isinstance(data, list):
+                    return []
+                return [Category.from_dict(item) for item in data]
+        except (json.JSONDecodeError, FileNotFoundError):
+            return []
+        
+    def _save_categories(self, categories):
+        with open(self.filepath, 'w', encoding='utf-8') as f: # <-- ALTERAÇÃO AQUI
+            json.dump([c.to_dict() for c in categories], f, indent=4, ensure_ascii=False) # <-- ALTERAÇÃO AQUI
 
     def get_all(self):
         """Retorna uma lista com todas as categorias."""
