@@ -1,5 +1,3 @@
-# services/user_service.py
-
 """
 Módulo de Serviço para Gerenciamento de Usuários (services/user_service.py)
 
@@ -48,7 +46,7 @@ class UserService:
         """Método privado para salvar a lista de usuários no arquivo JSON."""
         with open(self.filepath, 'w', encoding='utf-8') as f:
             users_data = [user.to_dict() for user in users]
-            json.dump(users_data, f, indent=4)
+            json.dump(users_data, f, indent=4, ensure_ascii=False)
 
     def get_by_email(self, email: str):
         """Busca um usuário pelo seu endereço de email."""
@@ -96,7 +94,6 @@ class UserService:
         self._save_users(users)
         return new_user
 
-    # --- NOVO MÉTODO ADICIONADO AQUI ---
     def get_total_count(self):
         """Retorna o número total de usuários cadastrados."""
         users = self._load_users()

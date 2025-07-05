@@ -22,7 +22,8 @@ class EventService:
 
     def _load_events(self):
         """Método privado para carregar a lista de eventos do arquivo JSON."""
-        with open(self.filepath, 'r', encoding='utf-8') as f:
+        # Usando 'utf-8-sig' para lidar com possíveis BOM (Byte Order Mark) no início do arquivo
+        with open(self.filepath, 'r', encoding='utf-8-sig') as f:
             try:
                 data = json.load(f)
                 if not isinstance(data, list):
@@ -51,9 +52,10 @@ class EventService:
                 return event
         return None
     
-    def search_events(self, query="", category=""):
+    # --- ALTERAÇÃO AQUI: Adicionando o filtro de 'location' ---
+    def search_events(self, query="", category="", location=""):
         """
-        Busca e filtra eventos por nome e/ou categoria.
+        Busca e filtra eventos por nome, categoria e/ou localização.
         """
         events = self.get_all()
         
@@ -63,14 +65,18 @@ class EventService:
                 if query.lower() in event.name.lower()
             ]
         
-        # --- INÍCIO DA ALTERAÇÃO ---
         if category:
             events = [
                 event for event in events
-                # Adicionamos 'if event.category' para garantir que a categoria não é None
                 if event.category and event.category.lower() == category.lower()
             ]
-        # --- FIM DA ALTERAÇÃO ---
+            
+        # --- NOVO FILTRO DE CIDADE ---
+        if location:
+            events = [
+                event for event in events
+                if event.location and event.location.lower() == location.lower()
+            ]
             
         return events
 
@@ -133,6 +139,13 @@ class EventService:
     def get_total_categories(self):
         """Retorna o número total de categorias de eventos distintas."""
         events = self._load_events()
-        # Cria um conjunto (set) para contar apenas categorias únicas
         unique_categories = {event.category for event in events if event.category}
         return len(unique_categories)
+
+    # --- NOVO MÉTODO ADICIONADO AQUI ---
+    def get_unique_locations(self):
+        """Retorna uma lista de cidades (locations) únicas e ordenadas."""
+        events = self._load_events()
+        # Usa um conjunto (set) para pegar apenas localizações únicas e depois ordena
+        unique_locations = sorted({event.location for event in events if event.location})
+        return unique_locations

@@ -1,13 +1,48 @@
-% rebase('layout.tpl', title='Eventos')
+% rebase('layout.tpl', title='Eventos', categories=categories, locations=locations)
 
 <h1>{{ title or 'Eventos Cadastrados' }}</h1>
+
+<!-- Formulário de Busca -->
+<div class="search-bar card mb-4">
+    <div class="card-body">
+        <form action="/events" method="GET" class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label for="query" class="form-label">O que você procura?</label>
+                <input type="text" name="query" id="query" class="form-control" placeholder="Nome do evento...">
+            </div>
+            <div class="col-md-3">
+                <label for="category_id" class="form-label">Categoria</label>
+                <select name="category_id" id="category_id" class="form-select">
+                    <option value="">Todas</option>
+                    % for cat in categories:
+                        <option value="{{cat.id}}">{{cat.name}}</option>
+                    % end
+                </select>
+            </div>
+            <div class="col-md-3">
+                <!-- ALTERAÇÃO AQUI: Trocando 'Cidade' por 'Local' -->
+                <label for="location" class="form-label">Local</label>
+                <select name="location" id="location" class="form-select">
+                    <option value="">Todos</option>
+                    % for loc in locations:
+                        <option value="{{loc}}">{{loc}}</option>
+                    % end
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">Buscar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 
 % if not events:
   <p>Nenhum evento encontrado.</p>
 % else:
-  <ul class="event-list">
+  <ul class="event-list list-group">
   % for event in events:
-    <li class="event-item">
+    <li class="event-item list-group-item">
       <strong>{{event.name}}</strong><br>
       Data: {{event.date}}<br>
       Local: {{event.location}}<br>

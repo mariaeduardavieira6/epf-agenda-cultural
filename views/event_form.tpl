@@ -27,6 +27,18 @@
         <label>Capacidade:</label><br>
         <input type="number" name="capacity" value="{{event.capacity if event else ''}}" min="1" required><br><br>
 
+        <label>Categoria:</label><br>
+        <select name="category" required>
+            % for cat in categories:
+                % if event and event.category == cat.name:
+                    <option value="{{cat.name}}" selected>{{cat.name}}</option>
+                % else:
+                    <option value="{{cat.name}}">{{cat.name}}</option>
+                % end
+            % end
+        </select>
+        <br><br>
+
         <button type="submit">Salvar</button>
     </form>
 
