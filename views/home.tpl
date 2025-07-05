@@ -220,6 +220,8 @@
 
                 data.forEach(event => {
                     const eventPrice = event.price > 0 ? `R$ ${event.price.toFixed(2)}` : 'Gratuito';
+                    // --- CORREÇÃO AQUI: Adicionar fallback para image_url ---
+                    const imageUrl = event.image_url ? event.image_url : 'https://via.placeholder.com/800x450?text=Evento+Destaque';
                     
                     featuredHTML += `
                         <div class="col-md-6">
