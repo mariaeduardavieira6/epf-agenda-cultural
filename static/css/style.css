@@ -1,5 +1,5 @@
 :root {
-    /* Variáveis de cor */
+    /* Suas variáveis de cor */
     --gochujang-red: #780000;
     --crimson-blaze: #C1121F;
     --light-beige: #FBF5E5;
@@ -15,7 +15,7 @@
 body {
     background-color: var(--light-beige); /* Fundo geral em bege claro */
     color: var(--cosmos-blue); /* Texto principal em azul escuro */
-    font-family: Arial, sans-serif; /* Exemplo de fonte */
+    font-family: 'Arial', sans-serif; /* Exemplo de fonte padrão */
 }
 
 /* Estilos para links */
@@ -28,45 +28,72 @@ a:hover {
     text-decoration: underline;
 }
 
-/* Estilos para o cabeçalho/navbar */
+/* --- Estilos para o cabeçalho/navbar (Ajustes Adicionais) --- */
 .navbar {
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Sombra suave para dar profundidade */
-    padding-top: 1rem; /* Espaçamento interno */
-    padding-bottom: 1rem;
+    background-color: var(--cosmos-blue); /* Garante que a cor seja aplicada */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Sombra mais pronunciada para profundidade */
+    padding-top: 1.25rem; /* Aumentar um pouco o padding vertical */
+    padding-bottom: 1.25rem;
+    position: sticky; /* Navbar fixa no topo ao rolar */
+    top: 0;
+    width: 100%;
+    z-index: 1020; /* Garante que fique acima de outros elementos */
 }
 
 .navbar-brand {
-    font-weight: bold;
-    font-size: 1.5rem;
-    color: var(--light-beige) !important; /* Marca em bege claro */
+    font-family: 'Montserrat', sans-serif; /* Exemplo: Usar uma fonte mais moderna */
+    font-weight: 700; /* Negrito mais forte */
+    font-size: 1.8rem; /* Aumentar o tamanho do logo */
+    color: var(--light-beige) !important; /* Cor clara para contraste */
+    letter-spacing: 0.05rem; /* Pequeno espaçamento entre letras */
 }
 
 .nav-link {
-    color: var(--white) !important; /* Links em branco */
-    transition: color 0.3s ease;
+    color: var(--white) !important; /* Links em branco por padrão */
+    font-weight: 500; /* Um pouco mais encorpado */
+    font-size: 1.05rem; /* Um pouco maior */
+    margin: 0 0.75rem; /* Espaçamento horizontal entre os links */
+    position: relative; /* Para o efeito de sublinhado */
+    transition: color 0.3s ease, transform 0.2s ease; /* Transição para cor e leve movimento */
 }
 
 .nav-link:hover {
     color: var(--blue-marble) !important; /* Mudar para azul claro ao passar o mouse */
+    transform: translateY(-2px); /* Leve levantamento ao passar o mouse */
+}
+
+/* Efeito de sublinhado animado nos links de navegação */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px; /* Posição do sublinhado */
+    left: 0;
+    background-color: var(--blue-marble); /* Cor do sublinhado */
+    transition: width 0.3s ease-out; /* Animação do sublinhado */
+}
+
+.nav-link:hover::after {
+    width: 100%; /* Expande o sublinhado na largura total */
 }
 
 /* Para o ícone do hamburguer em telas menores */
 .navbar-toggler {
-    border-color: rgba(255,255,255,0.5);
+    border-color: rgba(255,255,255,0.3); /* Borda mais sutil para o botão do toggler */
 }
-
-.navbar-toggler-icon {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-}
+/* O navbar-toggler-icon já está OK com o SVG branco que definimos */
 
 /* Ajuste para o texto de saudação "Olá, ..." */
 .nav-greeting {
     color: var(--light-beige) !important;
     padding: .5rem 1rem;
     display: block;
+    font-size: 1.05rem; /* Aumentar um pouco a fonte */
+    font-weight: 500;
 }
 
-/* --- Estilos para Formulários (Adaptados para suas cores) --- */
+/* --- Estilos para Formulários --- */
 
 .form-section {
     max-width: 450px;
@@ -115,7 +142,6 @@ a:hover {
     box-shadow: 0 0 0 0.25rem rgba(193, 18, 31, 0.25); /* Sombra suave com a cor crimson-blaze */
 }
 
-
 .form-actions {
     margin-top: 1.5rem;
     display: flex;
@@ -160,7 +186,80 @@ a:hover {
     text-align: center;
 }
 
-/* Estilos para o rodapé */
+/* --- Estilos para a Seção de Categorias --- */
+
+.category-section {
+    /* Gradiente de fundo */
+    background: linear-gradient(to bottom right, rgba(169, 213, 178, 0.1), rgba(186, 173, 142, 0.1)); /* Cores suaves */
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+}
+
+/* Para o subtítulo, ajustar largura máxima */
+.category-section .max-w-lg {
+    max-width: 600px;
+}
+.category-section .mx-auto {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.category-card {
+    background-color: var(--white);
+    backdrop-filter: blur(5px);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    border: 1px solid rgba(0, 48, 73, 0.1);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Garantir que todos os cartões tenham a mesma altura */
+}
+
+.category-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    border-color: var(--blue-marble);
+}
+
+.category-icon {
+    font-size: 3rem;
+    line-height: 1;
+    margin-bottom: 0.75rem;
+}
+
+.category-card h3 {
+    color: var(--cosmos-blue);
+    transition: color 0.3s ease;
+}
+
+.category-card:hover h3 {
+    color: var(--crimson-blaze);
+}
+
+.category-card p.small {
+    color: var(--blue-marble);
+}
+
+/* Utilitários de cor para texto (para usar diretamente no HTML) */
+.text-cosmos-blue {
+    color: var(--cosmos-blue) !important;
+}
+.text-light-beige {
+    color: var(--light-beige) !important;
+}
+.text-crimson-blaze {
+    color: var(--crimson-blaze) !important;
+}
+.text-blue-marble {
+    color: var(--blue-marble) !important;
+}
+
+/* --- Estilos para o rodapé --- */
 .main-footer {
     background-color: var(--cosmos-blue); /* Fundo do rodapé em azul escuro */
     color: var(--white); /* Texto do rodapé em branco */
