@@ -102,20 +102,41 @@ def setup_api_routes(app):
             session=request.environ.get('beaker.session')
         )
 
+    # Rota para a página Sobre Nós 
     @app.get('/about')
-    @view('about_page')
-    def page_about():
-        """Renderiza a página 'Sobre Nós'."""
-        return dict(
-            title="Sobre Nós",
-            session=request.environ.get('beaker.session')
-        )
+    def page_about(): 
+        return template('about_page.tpl', 
+                        title="Sobre Nós",
+                        session=request.environ.get('beaker.session'))
 
-    @app.get('/contact')
-    @view('contact_page')
+    # Rota para a página de Contato 
+    @app.route('/contact', method=['GET', 'POST']) # Adicionado method=['GET', 'POST']
     def page_contact():
-        """Renderiza a página de 'Contato'."""
-        return dict(
-            title="Contato",
-            session=request.environ.get('beaker.session')
-        )
+        session = request.environ.get('beaker.session')
+        error = None
+        success_message = None
+        contact_form = {} # Para preencher o formulário em caso de erro
+
+        if request.method == 'POST':
+            name = request.forms.get('name')
+            email = request.forms.get('email')
+            message = request.forms.get('message')
+
+            if not all([name, email, message]):
+                error = "Por favor, preencha todos os campos."
+                contact_form = request.forms.copy()
+            elif "@" not in email: # Validação simples de email
+                error = "Por favor, insira um endereço de email válido."
+                contact_form = request.forms.copy()
+            else:
+                # Implementa a lógica para enviar o email ou salvar a mensagem
+                print(f"Mensagem recebida de {name} ({email}): {message}")
+                success_message = "Sua mensagem foi enviada com sucesso! Em breve entraremos em contato."
+                # contact_form = {} # Descomente para limpar o formulário após sucesso
+
+        return template('contact_page.tpl', # Nome do template deve ser 'contact.tpl'
+                        title='Contato',
+                        error=error,
+                        success_message=success_message,
+                        contact_form=contact_form,
+                        session=session)
