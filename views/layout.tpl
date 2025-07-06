@@ -4,89 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agenda Cultural - {{title or 'Bem-vindo'}}</title>
-    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- CSS do Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Biblioteca de Ícones Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <!-- Seu CSS personalizado -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/static/css/style.css" />
-    
-    <style>
-        :root {
-            --primary-color: #E58A5A; /* Tom de laranja/coral da referência */
-            --primary-color-hover: #d97d4d;
-            --dark-text: #333;
-            --light-text: #6c757d;
-            /* ALTERAÇÃO AQUI: Fundo do corpo volta a ser branco */
-            --body-bg: #FFFFFF; 
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--body-bg);
-            color: var(--dark-text);
-        }
-
-        /* Estilo para o botão primário */
-        .btn-primary {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-            border-radius: 8px;
-            font-weight: 500;
-        }
-        .btn-primary:hover {
-            background-color: var(--primary-color-hover);
-            border-color: var(--primary-color-hover);
-        }
-
-        /* Estilos para o rodapé */
-        .site-footer {
-            background-color: #212529;
-            color: #adb5bd;
-            padding: 40px 0;
-            font-size: 0.9rem;
-        }
-        .site-footer h5 {
-            color: #ffffff;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-        .site-footer a {
-            color: #adb5bd;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        .site-footer a:hover {
-            color: #ffffff;
-        }
-        .site-footer .footer-links li {
-            margin-bottom: 10px;
-        }
-        .site-footer .social-icons a {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            line-height: 40px;
-            text-align: center;
-            border-radius: 50%;
-            background-color: #343a40;
-            color: #ffffff;
-            margin-right: 10px;
-        }
-        .site-footer .social-icons a:hover {
-            background-color: #495057;
-        }
-    </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
     <header>
-        <!-- ALTERAÇÃO AQUI: Voltando para a navbar escura -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark"> <div class="container-fluid">
                 <a class="navbar-brand" href="/">Agenda Cultural</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -105,7 +32,7 @@
                                     <a href="/events/new" class="btn btn-primary">Cadastrar Evento</a>
                                 </li>
                             % end
-                            <li class="nav-item"><span class="nav-link">Olá, {{session.get('user_name')}}!</span></li>
+                            <li class="nav-item"><span class="nav-link nav-greeting">Olá, {{session.get('user_name')}}!</span></li>
                             <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
                         % else:
                             <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
@@ -169,11 +96,15 @@
                 .then(response => response.json())
                 .then(data => {
                     const categoriesList = document.getElementById('footer-categories-list');
-                    const limitedData = data.slice(0, 5); 
+                    const limitedData = data.slice(0, 5); // Limita a 5 categorias no rodapé
                     let categoriesHTML = '';
-                    limitedData.forEach(category => {
-                        categoriesHTML += `<li><a href="/events?category_id=${category.id}">${category.name}</a></li>`;
-                    });
+                    if (limitedData.length === 0) {
+                        categoriesHTML = '<li>Nenhuma categoria.</li>';
+                    } else {
+                        limitedData.forEach(category => {
+                            categoriesHTML += `<li><a href="/events?category_id=${category.id}">${category.name}</a></li>`;
+                        });
+                    }
                     categoriesList.innerHTML = categoriesHTML;
                 })
                 .catch(error => {

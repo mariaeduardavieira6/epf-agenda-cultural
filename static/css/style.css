@@ -28,7 +28,7 @@ a:hover {
     text-decoration: underline;
 }
 
-/* --- Estilos para o cabeçalho/navbar (Ajustes Adicionais) --- */
+/* --- Estilos para o cabeçalho/navbar --- */
 .navbar {
     background-color: var(--cosmos-blue); /* Garante que a cor seja aplicada */
     box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Sombra mais pronunciada para profundidade */
@@ -41,7 +41,7 @@ a:hover {
 }
 
 .navbar-brand {
-    font-family: 'Montserrat', sans-serif; /* Exemplo: Usar uma fonte mais moderna */
+    font-family: 'Montserrat', sans-serif; 
     font-weight: 700; /* Negrito mais forte */
     font-size: 1.8rem; /* Aumentar o tamanho do logo */
     color: var(--light-beige) !important; /* Cor clara para contraste */
@@ -82,7 +82,6 @@ a:hover {
 .navbar-toggler {
     border-color: rgba(255,255,255,0.3); /* Borda mais sutil para o botão do toggler */
 }
-/* O navbar-toggler-icon já está OK com o SVG branco que definimos */
 
 /* Ajuste para o texto de saudação "Olá, ..." */
 .nav-greeting {
@@ -264,7 +263,7 @@ a:hover {
     color: var(--blue-marble);
 }
 
-/* Utilitários de cor para texto (para usar diretamente no HTML) */
+/* Utilitários de cor para texto */
 .text-cosmos-blue {
     color: var(--cosmos-blue) !important;
 }
@@ -369,11 +368,795 @@ a:hover {
     color: var(--gochujang-red);
 }
 
-/* Estas regras devem ser mantidas no static/css/style.css, apenas para garantir */
 .quick-search {
     margin-top: 20px;
     text-align: center;
 }
 .quick-search .btn {
     margin: 0 5px;
+}
+
+
+    /* Estilos específicos para a home page */
+ :root {
+    /* Cores principais */
+    --primary-color: #E58A5A; /* Laranja/Coral (cor do botão "Explorar Eventos", tags) */
+    --primary-color-hover: #d97d4d; /* Laranja/Coral mais escuro para hover */
+    --secondary-color: #f77099; /* Rosa/Salmão (cor do card "Arte") */
+
+    /* Cores de texto e fundo */
+    --dark-text: #343a40; /* Cinza escuro para títulos e textos principais */
+    --muted-text: #6c757d; /* Cinza médio para textos secundários/descrições */
+    --body-bg: #FFFFFF; /* Fundo do corpo branco */
+    --card-bg: #ffffff; /* Fundo de cards branco */
+    --light-border: #e9ecef; /* Borda muito clara */
+    --white: #ffffff;
+    --black: #000000;
+
+    /* Cores para o navbar e footer */
+    --navbar-footer-bg: #212529; /* Fundo do cabeçalho e rodapé (quase preto) */
+    --navbar-footer-link: #adb5bd; /* Cor dos links no cabeçalho e rodapé (cinza claro) */
+    --navbar-footer-link-hover: #ffffff; /* Cor dos links no hover (branco) */
+    --navbar-brand-color: #ffffff; /* Cor do brand no navbar (branco) */
+
+    /* Cores para os ícones de estatísticas */
+    --stat-red: #dc3545; /* Para o ícone de Eventos */
+    --stat-green: #28a745; /* Para o ícone de Cidades */
+    --stat-blue: #007bff; /* Para o ícone de Usuários */
+    --stat-pink: #e83e8c; /* Para o ícone de Categorias */
+    --stat-yellow: #ffc107; /* Para o texto "Cultura" e estrelas */
+}
+
+/* Estilos gerais para o corpo da página */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--body-bg);
+    color: var(--dark-text);
+    line-height: 1.6; /* Leve aumento para melhor legibilidade */
+}
+
+/* Estilos para links (geral) */
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease; /* Transição mais suave */
+}
+
+a:hover {
+    color: var(--primary-color-hover);
+    text-decoration: underline;
+}
+
+/* --- Estilos para o cabeçalho/navbar --- */
+.navbar {
+    background-color: var(--navbar-footer-bg);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+    padding: 0.8rem 0; 
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1020;
+    border-bottom: none;
+}
+
+.navbar-brand {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 1.6rem; 
+    color: var(--navbar-brand-color) !important;
+    letter-spacing: 0.02rem; 
+    transition: transform 0.2s ease;
+}
+
+.navbar-brand:hover {
+    transform: translateY(-2px);
+}
+
+.nav-link {
+    color: var(--navbar-footer-link) !important;
+    font-weight: 500;
+    font-size: 1rem; 
+    margin: 0 0.6rem; 
+    position: relative;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.nav-link:hover {
+    color: var(--navbar-footer-link-hover) !important;
+    transform: translateY(-2px);
+}
+
+/* Efeito de sublinhado animado nos links de navegação */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -6px; 
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--primary-color);
+    transition: width 0.3s ease-out;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.navbar-toggler {
+    border-color: rgba(255,255,255,0.3);
+    transition: transform 0.2s ease;
+}
+.navbar-toggler:hover {
+    transform: scale(1.05);
+}
+
+/* Ajuste para o texto de saudação "Olá, ..." */
+.nav-greeting {
+    color: var(--navbar-footer-link-hover) !important;
+    padding: .5rem 1rem;
+    display: block;
+    font-size: 1rem; 
+    font-weight: 500;
+}
+
+/* --- Estilos para Botões --- */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--white);
+    border-radius: 40px; /* Levemente menos arredondado */
+    font-weight: 600;
+    padding: 0.7rem 2rem; 
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.btn-primary:hover {
+    background-color: var(--primary-color-hover);
+    border-color: var(--primary-color-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.btn-outline-light {
+    border-color: var(--white);
+    color: var(--white);
+    background-color: transparent;
+    border-radius: 40px; /* Levemente menos arredondado */
+    font-weight: 600;
+    padding: 0.7rem 2rem; 
+    transition: all 0.3s ease;
+}
+.btn-outline-light:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+/* --- Estilos para Formulários --- */
+.form-section {
+    max-width: 450px; 
+    margin: 2.5rem auto; /* Ajustado o espaçamento */
+    padding: 2rem; 
+    background-color: var(--card-bg);
+    border-radius: 10px; /* Levemente menos arredondado */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); /* Sombra mais suave */
+}
+
+.form-section h1 {
+    text-align: center;
+    margin-bottom: 1.5rem; 
+    color: var(--dark-text);
+    font-size: 2rem; 
+}
+
+.form-group {
+    margin-bottom: 1.25rem; 
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--dark-text);
+    font-size: 1rem; 
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="date"],
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--light-border);
+    border-radius: 6px; 
+    font-size: 1rem; 
+    color: var(--dark-text);
+    background-color: var(--white);
+    transition: all 0.3s ease;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus,
+.form-group input[type="password"]:focus,
+.form-group input[type="date"]:focus,
+.form-group textarea:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 0.25rem rgba(229, 138, 90, 0.25);
+}
+
+.form-actions {
+    margin-top: 1.5rem; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem; 
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 12px; 
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 6px; 
+    cursor: pointer;
+    font-size: 1rem; 
+    font-weight: 600;
+    transition: background-color 0.2s, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.btn-submit:hover {
+    background-color: var(--primary-color-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.btn-cancel {
+    color: var(--muted-text);
+    text-decoration: none;
+    font-size: 0.95rem; 
+    transition: color 0.2s ease;
+    padding: 0.4rem 0.8rem; 
+}
+
+.btn-cancel:hover {
+    color: var(--dark-text);
+    text-decoration: underline;
+}
+
+.error-message {
+    color: var(--white);
+    background-color: var(--danger-color);
+    padding: 10px; 
+    border-radius: 6px; 
+    margin-bottom: 1rem; 
+    text-align: center;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* --- Estilos para a Seção de Categorias --- */
+
+.category-section {
+    background-color: var(--body-bg);
+    padding: 4rem 0; 
+}
+
+.category-section .max-w-lg {
+    max-width: 600px; 
+    margin-bottom: 2.5rem; 
+}
+.category-section h2 {
+    font-size: 2.5rem; 
+    font-weight: 700;
+    color: var(--dark-text);
+    margin-bottom: 0.8rem;
+}
+.category-section p.lead {
+    font-size: 1.1rem; 
+    color: var(--muted-text);
+}
+
+.category-card {
+    background-color: var(--card-bg);
+    border-radius: 12px; 
+    padding: 1.8rem; 
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08); /* Sombra mais suave */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    border: 1px solid var(--light-border);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-decoration: none;
+    color: var(--dark-text);
+    position: relative;
+}
+
+.category-card:hover {
+    transform: translateY(-8px); 
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* Sombra mais suave */
+    border-color: var(--primary-color);
+}
+
+.category-card a {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    text-indent: -9999px;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.category-icon {
+    font-size: 3.5rem; 
+    line-height: 1;
+    margin-bottom: 0.8rem; 
+    color: var(--primary-color);
+    transition: color 0.3s ease;
+}
+
+.category-card:hover .category-icon {
+    color: var(--primary-color-hover);
+}
+
+.category-card h3 {
+    font-size: 1.6rem; 
+    color: var(--dark-text);
+    transition: color 0.3s ease;
+    margin-bottom: 0.4rem;
+}
+
+.category-card:hover h3 {
+    color: var(--primary-color) !important;
+}
+
+.category-card p.small {
+    color: var(--muted-text);
+    font-size: 0.9rem; 
+    text-align: center;
+}
+
+/* Utilitários de cor para texto */
+.text-primary-color {
+    color: var(--primary-color) !important;
+}
+.text-dark-text {
+    color: var(--dark-text) !important;
+}
+.text-muted-text {
+    color: var(--muted-text) !important;
+}
+
+/* --- Estilos para o rodapé --- */
+.site-footer {
+    background-color: var(--navbar-footer-bg);
+    color: var(--navbar-footer-link);
+    padding: 40px 0; 
+    font-size: 0.9rem; 
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.2);
+}
+.site-footer h5 {
+    color: var(--navbar-footer-link-hover);
+    font-weight: 700;
+    margin-bottom: 20px; 
+}
+.site-footer a {
+    color: var(--navbar-footer-link);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+.site-footer a:hover {
+    color: var(--navbar-footer-link-hover);
+}
+.site-footer .footer-links li {
+    margin-bottom: 10px; 
+}
+.site-footer .social-icons a {
+    display: inline-block;
+    width: 40px;    
+    height: 40px; 
+    line-height: 40px;
+    text-align: center;
+    border-radius: 50%;
+    background-color: #343a40;
+    color: #ffffff;
+    margin-right: 10px; 
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.site-footer .social-icons a:hover {
+    background-color: #495057;
+    transform: translateY(-3px);
+}
+
+/* --- Estilos para os Cards de Eventos --- */
+
+.event-card, .featured-event-card {
+    background-color: var(--card-bg);
+    border-radius: 12px; 
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08); /* Sombra mais suave */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+}
+
+.event-card:hover, .featured-event-card:hover {
+    transform: translateY(-8px); 
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* Sombra mais suave */
+}
+
+.event-card-img, .featured-event-card .card-img-top {
+    width: 100%;
+    height: 180px; 
+    object-fit: cover;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.event-card-body, .featured-event-card .card-body {
+    padding: 1.5rem; 
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.event-card-title, .featured-event-card .card-title {
+    font-size: 1.4rem; 
+    font-weight: 700;
+    color: var(--dark-text);
+    margin-bottom: 0.7rem; 
+    line-height: 1.3;
+}
+
+.event-card-meta, .featured-event-card .event-info {
+    font-size: 0.95rem; 
+    color: var(--muted-text);
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.event-card-meta i, .featured-event-card .event-info i {
+    margin-right: 6px; 
+    color: var(--primary-color);
+}
+.featured-event-card .event-rating {
+    color: var(--stat-yellow);
+}
+
+
+.event-card-description, .featured-event-card .card-text {
+    font-size: 1rem; 
+    color: var(--dark-text);
+    line-height: 1.6;
+    margin-bottom: 1rem; 
+    flex-grow: 1;
+}
+
+.event-card-footer, .featured-event-card .event-location-price-wrapper {
+    padding: 1rem 1.5rem; 
+    border-top: 1px solid var(--light-border);
+    background-color: var(--body-bg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+}
+
+.event-card-price, .featured-event-card .event-price {
+    font-weight: 700;
+    color: var(--primary-color);
+    font-size: 1.1rem; 
+}
+
+.event-card-link {
+    color: var(--primary-color);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.event-card-link:hover {
+    color: var(--primary-color-hover);
+}
+
+.featured-event-card .category-tag {
+    position: absolute;
+    top: 15px; 
+    left: 15px; 
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 6px 12px; 
+    border-radius: 25px; 
+    font-size: 0.85rem; 
+    font-weight: 600;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 2;
+    transition: background-color 0.2s ease;
+}
+.featured-event-card .category-tag.music {
+    background-color: var(--primary-color);
+}
+.featured-event-card .category-tag.art-exhibition {
+    background-color: var(--secondary-color);
+}
+.featured-event-card .event-location {
+    color: var(--muted-text);
+    font-size: 0.95rem; 
+}
+
+
+/* Estilos para a homepage */
+.hero-section {
+    background: url('/static/images/hero-background.jpg') no-repeat center center;
+    background-size: cover;
+    color: var(--dark-text);
+    padding: 6rem 0; 
+    text-align: center;
+    min-height: 60vh; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 50px; 
+    border-radius: 0;
+}
+
+.hero-section h1 {
+    font-size: 3.2rem; 
+    font-weight: 700;
+    margin-bottom: 1.2rem; 
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.hero-section .culture-text {
+    color: var(--stat-yellow);
+}
+
+.hero-section p {
+    font-size: 1.3rem; 
+    max-width: 700px; 
+    margin-bottom: 2rem; 
+    line-height: 1.6;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.hero-section .btn {
+    font-size: 1.1rem; 
+    padding: 0.8rem 2.2rem; 
+    border-radius: 40px; 
+    transition: all 0.3s ease;
+}
+
+
+/* Seção de Estatísticas */
+.stats-section {
+    padding: 4rem 0; 
+    background-color: var(--card-bg);
+    margin-bottom: 50px; 
+    border-radius: 12px; 
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08); /* Sombra mais suave */
+}
+
+.stats-section .stat-item {
+    text-align: center;
+    margin-bottom: 2rem; 
+}
+
+.stat-icon-box {
+    width: 80px; 
+    height: 80px; 
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px; 
+    font-size: 2.5rem; 
+    color: var(--white);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.stat-icon-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.bg-events { background-color: var(--stat-red); }
+.bg-cities { background-color: var(--stat-green); }
+.bg-users { background-color: var(--stat-blue); }
+.bg-categories { background-color: var(--stat-pink); }
+
+.stats-section .stat-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--dark-text);
+    margin-bottom: 0.6rem; 
+}
+.stats-section .stat-label {
+    font-size: 1.1rem; 
+    color: var(--muted-text);
+}
+
+/* Seção de Busca */
+.search-container {
+    background: var(--card-bg);
+    padding: 40px; 
+    border-radius: 12px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1); /* Sombra mais suave */
+    margin-top: 50px;
+    margin-bottom: 60px; 
+}
+.search-container h2 {
+    color: var(--dark-text);
+    font-weight: 700;
+    font-size: 2.2rem; 
+    margin-bottom: 1.8rem; 
+}
+.search-container .form-label {
+    font-weight: 600;
+    color: var(--dark-text);
+    font-size: 1rem; 
+}
+.quick-search {
+    margin-top: 30px;
+    text-align: center;
+}
+.quick-search .btn {
+    margin: 0 8px; 
+    border-radius: 30px; 
+    font-size: 0.95rem; 
+    padding: 0.6rem 1.5rem; 
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.quick-search .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+
+/* Secção de Eventos em Destaque */
+.featured-events-section {
+    padding: 3rem 0 7rem 0; 
+}
+.featured-events-section h2 {
+    font-size: 2.5rem; 
+    font-weight: 700;
+    color: var(--dark-text);
+}
+.featured-events-section .lead {
+    color: var(--muted-text);
+    margin-bottom: 3rem; 
+    font-size: 1.1rem; 
+}
+
+
+/* Responsividade */
+@media (max-width: 992px) {
+    .hero-section h1 {
+        font-size: 2.8rem;
+    }
+    .hero-section p {
+        font-size: 1.2rem;
+    }
+    .stats-section .stat-number {
+        font-size: 2.5rem;
+    }
+    .stats-section .stat-label {
+        font-size: 1rem;
+    }
+    .category-card, .event-card, .featured-event-card {
+        padding: 1.2rem;
+    }
+    .category-card h3, .event-card-title, .featured-event-card .card-title {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 5rem 0;
+        min-height: 50vh;
+    }
+    .hero-section h1 {
+        font-size: 2.2rem;
+    }
+    .hero-section p {
+        font-size: 1rem;
+    }
+    .hero-section .btn {
+        font-size: 0.95rem;
+        padding: 0.5rem 1.5rem;
+    }
+    .stats-section {
+        padding: 2.5rem 0;
+    }
+    .stats-section .stat-number {
+        font-size: 2rem;
+    }
+    .stats-section .stat-label {
+        font-size: 0.9rem;
+    }
+    .stat-icon-box {
+        width: 65px;
+        height: 65px;
+        font-size: 2rem;
+    }
+    .search-container {
+        padding: 30px;
+        margin-top: 30px;
+        margin-bottom: 40px;
+    }
+    .search-container h2 {
+        font-size: 1.8rem;
+    }
+    .quick-search .btn {
+        margin: 5px;
+        width: calc(50% - 10px);
+    }
+    .featured-events-section h2 {
+        font-size: 2rem;
+    }
+    .event-card-img, .featured-event-card .card-img-top {
+        height: 150px;
+    }
+    .event-card-title, .featured-event-card .card-title {
+        font-size: 1.2rem;
+    }
+    .event-card-price, .featured-event-card .event-price {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar-brand {
+        font-size: 1.3rem;
+    }
+    .nav-link {
+        font-size: 0.85rem;
+        margin: 0 0.4rem;
+    }
+    .hero-section h1 {
+        font-size: 1.8rem;
+    }
+    .hero-section p {
+        font-size: 0.9rem;
+    }
+    .hero-section .btn {
+        width: 100%;
+        margin-bottom: 0.8rem;
+    }
+    .quick-search .btn {
+        width: 100%;
+    }
+    .form-section {
+        padding: 1.2rem;
+        margin: 1.2rem auto;
+    }
+    .form-section h1 {
+        font-size: 1.6rem;
+    }
+    .category-card h3 {
+        font-size: 1.3rem;
+    }
+    .event-card-body, .featured-event-card .card-body {
+        padding: 1rem;
+    }
+    .site-footer {
+        padding: 25px 0;
+    }
 }
