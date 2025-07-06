@@ -1,9 +1,11 @@
-% rebase('layout.tpl', title='Agenda Cultural - Página Inicial', categories=categories, locations=locations)
+% rebase('layout.tpl', title='Agenda Cultural - Página Inicial', categories=categories, cities=cities)
 
-<div class="hero-section text-center"> <h1>Descubra a <span class="culture-text">Cultura</span> da sua Cidade</h1>
+<div class="hero-section text-center">
+    <h1>Descubra a <span class="culture-text">Cultura</span> da sua Cidade</h1>
     <p>Encontre os melhores eventos culturais, conecte-se com artistas locais e faça parte de uma comunidade vibrante de amantes da cultura.</p>
     <a href="/events" class="btn btn-primary">Explorar Eventos</a>
-    <a href="/about" class="btn btn-outline-light ms-3">Saiba Mais</a> </div>
+    <a href="/about" class="btn btn-outline-light ms-3">Saiba Mais</a>
+</div>
 </section>
 
 <section class="container stats-section mb-5">
@@ -28,15 +30,17 @@
                 % end
             </select>
         </div>
+        
         <div class="col-md-3">
-            <label for="location" class="form-label">Local</label>
-            <select name="location" id="location" class="form-select">
-                <option value="">Todos</option>
-                % for loc in locations:
-                    <option value="{{loc}}">{{loc}}</option>
+            <label for="city" class="form-label">Cidade</label>
+            <select name="city" id="city" class="form-select">
+                <option value="">Todas</option>
+                % for city in cities:
+                    <option value="{{city}}">{{city}}</option>
                 % end
             </select>
         </div>
+
         <div class="col-md-2">
             <button type="submit" class="btn btn-primary w-100">Buscar Eventos</button>
         </div>
@@ -123,7 +127,9 @@
                                         </div>
                                     <h5 class="card-title">${event.name}</h5>
                                     <p class="card-text">${event.description.substring(0, 100)}...</p>
-                                    <p class="event-location"><i class="fa-solid fa-map-marker-alt"></i> ${event.location}</p>
+                                    
+                                    <p class="event-location"><i class="fa-solid fa-map-marker-alt"></i> ${event.city}</p>
+                                    
                                     <div class="event-price">${eventPrice}</div>
                                 </div>
                             </a>

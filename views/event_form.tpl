@@ -21,16 +21,19 @@
             </div>
 
             <div class="row">
-                <div class="col-md-6 mb-3">
+                <div class="col-md-4 mb-3">
                     <label for="date" class="form-label">Data:</label>
                     <input type="date" id="date" name="date" class="form-control" value="{{event.date if event else ''}}" required>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label for="location" class="form-label">Local:</label>
-                    <input type="text" id="location" name="location" class="form-control" value="{{event.location if event else ''}}" required>
+                <div class="col-md-4 mb-3">
+                    <label for="city" class="form-label">Cidade:</label>
+                    <input type="text" id="city" name="city" class="form-control" placeholder="Ex: Brasília, Goiânia" value="{{event.city if event else ''}}" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="location" class="form-label">Local (Endereço Específico):</label>
+                    <input type="text" id="location" name="location" class="form-control" placeholder="Ex: Estádio Municipal" value="{{event.location if event else ''}}" required>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-md-4 mb-3">
                     <label for="capacity" class="form-label">Capacidade:</label>
@@ -48,18 +51,16 @@
                         % end
                     </select>
                 </div>
-                <!-- INÍCIO DA ALTERAÇÃO: Campo de Preço -->
                 <div class="col-md-4 mb-3">
                     <label for="price" class="form-label">Preço (R$):</label>
                     <input type="number" id="price" name="price" class="form-control" value="{{event.price if event else '0.00'}}" min="0" step="0.01" required>
                 </div>
-                <!-- FIM DA ALTERAÇÃO -->
             </div>
             <div class="mb-3">
-    <label for="image_url" class="form-label">URL da Imagem (opcional):</label>
-    <input type="url" class="form-control" id="image_url" name="image_url" value="{{ event.image_url if event else '' }}" placeholder="Ex: https://example.com/imagem-do-evento.jpg">
-    <div class="form-text text-muted">Cole aqui o link direto para a imagem do evento. Esta imagem será exibida na listagem e na página de detalhes.</div>
-</div>
+                <label for="image_url" class="form-label">URL da Imagem (opcional):</label>
+                <input type="url" class="form-control" id="image_url" name="image_url" value="{{ event.image_url if event else '' }}" placeholder="Ex: https://example.com/imagem-do-evento.jpg">
+                <div class="form-text text-muted">Cole aqui o link direto para a imagem do evento. Esta imagem será exibida na listagem e na página de detalhes.</div>
+            </div>
 
             <hr>
 

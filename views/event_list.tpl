@@ -1,4 +1,4 @@
-% rebase('layout.tpl', title='Eventos', categories=categories, locations=locations)
+% rebase('layout.tpl', title='Eventos', categories=categories, cities=cities)
 
 <style>
     /* Estilo para os botões de busca rápida */
@@ -16,11 +16,11 @@
         border-radius: 12px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
-        height: 100%; /* Garante que todos os cards tenham a mesma altura */
+        height: 100%;
         display: flex;
         flex-direction: column;
-        overflow: hidden; /* Garante que nada saia dos limites do card */
-        position: relative; /* Para posicionamento absoluto de elementos internos se necessário */
+        overflow: hidden;
+        position: relative;
     }
 
     .event-card:hover {
@@ -30,15 +30,15 @@
 
     .event-card-img {
         width: 100%;
-        height: 180px; /* Altura fixa para as imagens */
-        object-fit: cover; /* Garante que a imagem cubra a área sem distorcer */
+        height: 180px;
+        object-fit: cover;
         border-top-left-radius: 12px;
         border-top-right-radius: 12px;
     }
 
     .event-card-body {
         padding: 1.5rem;
-        flex-grow: 1; /* Faz o corpo do card ocupar o espaço restante */
+        flex-grow: 1;
         display: flex;
         flex-direction: column;
     }
@@ -61,7 +61,7 @@
         color: var(--cosmos-blue);
         line-height: 1.5;
         margin-bottom: 1rem;
-        flex-grow: 1; /* Permite que a descrição ocupe o espaço */
+        flex-grow: 1;
     }
 
     .event-card-footer {
@@ -71,6 +71,12 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+    }
+    
+    .event-card-actions {
+        display: flex;
+        align-items: center; /* Alinha o link "Ver detalhes" e os botões */
+        gap: 0.75rem;      /* Adiciona um espaço consistente entre os itens */
     }
 
     .event-card-price {
@@ -91,13 +97,12 @@
     }
 
     .admin-actions .btn {
-        margin-right: 0.5rem; /* Espaçamento entre os botões de admin */
+        margin-right: 0.5rem;
     }
 </style>
 
 <h1 class="display-4 fw-bold mb-4 text-center text-cosmos-blue">{{ title or 'Eventos Cadastrados' }}</h1>
 
-<!-- Formulário de Busca -->
 <div class="search-bar card mb-4 shadow-sm">
     <div class="card-body">
         <form action="/events" method="GET" class="row g-3 align-items-end">
@@ -114,28 +119,28 @@
                     % end
                 </select>
             </div>
+            
             <div class="col-md-3">
-                <label for="location" class="form-label">Local</label>
-                <select name="location" id="location" class="form-select">
-                    <option value="">Todos</option>
-                    % for loc in locations:
-                        <option value="{{loc}}">{{loc}}</option>
+                <label for="city" class="form-label">Cidade</label>
+                <select name="city" id="city" class="form-select">
+                    <option value="">Todas</option>
+                    % for city in cities:
+                        <option value="{{city}}">{{city}}</option>
                     % end
                 </select>
             </div>
+            
             <div class="col-md-2">
                 <button type="submit" class="btn btn-primary w-100">Buscar</button>
             </div>
         </form>
 
-        <!-- INÍCIO DA ALTERAÇÃO: Adicionado o botão "Gratuitos" -->
         <div class="quick-search">
             <span class="me-2">Busca rápida:</span>
             <a href="/events?filter=today" class="btn btn-outline-secondary btn-sm">Hoje</a>
             <a href="/events?filter=weekend" class="btn btn-outline-secondary btn-sm">Este fim de semana</a>
             <a href="/events?filter=free" class="btn btn-outline-secondary btn-sm">Gratuitos</a>
         </div>
-        <!-- FIM DA ALTERAÇÃO -->
     </div>
 </div>
 
@@ -147,13 +152,18 @@
     % for event in events:
         <div class="col">
             <div class="event-card shadow">
-                <img src="https://via.placeholder.com/400x180?text=Evento" class="event-card-img" alt="Imagem do Evento">
+                
+                % if event.image_url:
+                    <img src="{{event.image_url}}" class="event-card-img" alt="Imagem de {{event.name}}">
+                % else:
+                    <img src="/static/images/default-event.jpg" class="event-card-img" alt="Evento sem imagem">
+                % end
 
                 <div class="event-card-body">
                     <h3 class="event-card-title">{{event.name}}</h3>
                     <p class="event-card-meta">
                         🗓️ {{event.date}} <br>
-                        📍 {{event.location}} <br>
+                        📍 {{event.city}} <br>
                         Categoría: {{event.category}}
                     </p>
                     <p class="event-card-description">
@@ -169,13 +179,14 @@
                             Gratuito
                         % end
                     </span>
-                    <div>
+                    
+                    <div class="event-card-actions"> 
                         <a href="/events/{{event.id}}" class="event-card-link">Ver detalhes</a>
 
                         % if session and session.get('is_admin'):
-                            <a href="/events/edit/{{event.id}}" class="btn btn-sm btn-warning ms-2">Editar</a>
+                            <a href="/events/edit/{{event.id}}" class="btn btn-sm btn-warning">Editar</a>
                             <form action="/events/delete/{{event.id}}" method="POST" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja excluir este evento?');">
-                                <button type="submit" class="btn btn-sm btn-danger ms-2">Excluir</button>
+                                <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
                             </form>
                         % end
                     </div>

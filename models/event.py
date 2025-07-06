@@ -1,5 +1,3 @@
-# models/event.py
-
 """
 Este ficheiro define a classe que representa a entidade de um evento na aplicação,
 cumprindo o papel da camada "Model" na arquitetura MVC.
@@ -11,8 +9,8 @@ class Event:
     Define os atributos e comportamentos essenciais de um evento.
     """
     # --- ALTERAÇÃO AQUI: Adicionados novos campos para a funcionalidade de destaque ---
-    def __init__(self, id, name, date, location, capacity, description="", category="", price=0.0, 
-                 time="00:00", image_url="", rating=0.0, is_featured=False):
+    def __init__(self, id, name, date, location, city, capacity, description="", category="", price=0.0,
+                 time="00:00", image_url="", rating=0.0, is_featured=False): # <- 1. Adicionado 'city' aqui
         """
         Construtor da classe Event.
 
@@ -21,6 +19,7 @@ class Event:
             name (str): O nome do evento.
             date (str): A data do evento.
             location (str): O local onde o evento ocorrerá.
+            city (str): A cidade onde o evento ocorrerá.  # <- DOCSTRING ATUALIZADA
             capacity (int): A capacidade máxima de participantes.
             description (str, optional): Uma descrição mais detalhada do evento.
             category (str, optional): A categoria do evento (ex: "Música", "Teatro").
@@ -34,6 +33,7 @@ class Event:
         self.name = name
         self.date = date
         self.location = location
+        self.city = city  # <- 2. Adicionado o atributo 'city'
         self.capacity = capacity
         self.description = description
         self.category = category
@@ -54,6 +54,7 @@ class Event:
             "name": self.name,
             "date": self.date,
             "location": self.location,
+            "city": self.city,  # <- 3. Adicionado 'city' ao dicionário
             "capacity": self.capacity,
             "description": self.description,
             "category": self.category,
