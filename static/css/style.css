@@ -944,52 +944,57 @@ a:hover {
 
 /* Seção de Estatísticas */
 .stats-section {
-    padding: 4rem 0; 
-    background-color: var(--card-bg);
-    margin-bottom: 50px; 
-    border-radius: 12px; 
-    box-shadow: 0 8px 25px rgba(0,0,0,0.08); /* Sombra mais suave */
+    padding: 2.5rem 0; /* AJUSTADO: Diminuído para 2.5rem para tornar o bloco menor */
+    background-color: var(--card-bg); /* Reintroduz o fundo branco do card */
+    margin-bottom: 50px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08); /* Reintroduz a sombra */
+    /* Adicione margin: 0 auto; e max-width para centralizar e controlar a largura se necessário,
+       mas pelo layout atual, pode não ser preciso aqui se ele já estiver dentro de um container */
 }
 
 .stats-section .stat-item {
     text-align: center;
-    margin-bottom: 2rem; 
+    margin-bottom: 1.5rem; /* Manter ou ajustar conforme o espaçamento desejado entre os itens */
 }
 
 .stat-icon-box {
-    width: 80px; 
-    height: 80px; 
+    width: 65px; /* AJUSTADO: Diminui ainda mais o tamanho da caixa do ícone */
+    height: 65px; /* AJUSTADO: Diminui ainda mais o tamanho da caixa do ícone */
+    line-height: 65px; /* Alinha verticalmente */
+    font-size: 1.8rem; /* AJUSTADO: Diminui o tamanho do ícone */
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 15px; 
-    font-size: 2.5rem; 
-    color: var(--white);
+    margin: 0 auto 10px;
+    color: var(--white); /* Cor do ícone (branco, pois o fundo da caixa será colorido) */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .stat-icon-box:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    transform: translateY(-3px); /* Levemente menos levantado */
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1); /* Sombra de hover mais sutil */
 }
 
+/* Garanta que estas cores estejam presentes e corretas para os ícones */
 .bg-events { background-color: var(--stat-red); }
 .bg-cities { background-color: var(--stat-green); }
 .bg-users { background-color: var(--stat-blue); }
 .bg-categories { background-color: var(--stat-pink); }
 
 .stats-section .stat-number {
-    font-size: 3rem;
+    font-size: 2rem; /* AJUSTADO: Diminui o tamanho do número */
     font-weight: 700;
     color: var(--dark-text);
-    margin-bottom: 0.6rem; 
+    margin-bottom: 0.4rem; /* Ajusta a margem inferior */
 }
 .stats-section .stat-label {
-    font-size: 1.1rem; 
+    font-size: 0.9rem; /* AJUSTADO: Diminui o tamanho do rótulo */
     color: var(--muted-text);
 }
+
 
 /* Seção de Busca */
 .search-container {
@@ -1159,4 +1164,90 @@ a:hover {
     .site-footer {
         padding: 25px 0;
     }
+}
+
+
+.hero-section .hero-content-wrapper {
+    background-color: #deeff3;
+    padding: 4.5em 3.5em; 
+    border-radius: 15px; 
+    margin: 0 auto;
+    max-width: 850px; 
+    box-shadow: 0 6px 20px rgb(218, 239, 245); 
+    text-align: center;
+}
+
+
+.hero-section .container {
+    position: relative;
+    z-index: 2; 
+}
+
+
+.hero-section .hero-content-wrapper {
+    background-color: #f5f1e8; 
+    padding: 3em 2.5em; 
+    border-radius: 12px;
+    margin: 0 auto;
+    max-width: 800px;
+    box-shadow: 0 4px 15px rgba(104, 103, 103, 0.1);
+    text-align: center;
+}
+
+/* Ajustes para elementos dentro do wrapper */
+.hero-section .highlight-text {
+    background-color: transparent;
+    padding: 0;
+    border-radius: 0;
+    display: block;
+    color: var(--dark-text); /* Ajuste para o texto principal ser escuro */
+}
+
+.hero-section h1 {
+    font-size: 3.2em; /* Tamanho da fonte para o título principal */
+    margin-bottom: 0.8em; /* Espaço entre o título e o parágrafo */
+    line-height: 1.2;
+}
+
+.hero-section h1 .culture-text {
+    color: var(--primary-color); /* Garante que 'Cultura' mantenha a cor laranja */
+}
+
+.hero-section .lead {
+    font-size: 1.3em; /* Tamanho da fonte para o parágrafo */
+    margin-bottom: 2em; /* Espaço entre o parágrafo e os botões */
+    color: var(--muted-text); /* Cor para o texto secundário */
+}
+
+.hero-section .hero-buttons {
+    display: flex; /* Usa flexbox para alinhar os botões */
+    justify-content: center; /* Centraliza os botões horizontalmente */
+    gap: 1em; /* Espaço entre os botões */
+}
+
+.hero-section .hero-buttons .btn {
+    min-width: 180px; /* Largura mínima para os botões */
+    padding: 1em 2.5em; /* Padding maior para os botões */
+    font-size: 1.1em; /* Tamanho da fonte dos botões */
+}
+
+/* Estilos dos botões para o tema */
+.btn-primary {
+    background-color: var(--primary-color); /* Cor principal (laranja) */
+    border-color: var(--primary-color);
+    color: var(--light-text);
+}
+.btn-primary:hover {
+    background-color: var(--dark-orange); /* Laranja mais escuro no hover */
+    border-color: var(--dark-orange);
+}
+
+.btn-outline-light {
+    border-color: var(--muted-text); 
+    color: var(--dark-text); 
+    background-color: transparent; /* Para garantir que não tenha fundo branco */
+}
+.btn-outline-light:hover {
+    background-color: var(--light-gray); 
+    color: var(--dark-text);
 }

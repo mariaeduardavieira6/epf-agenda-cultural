@@ -1,11 +1,16 @@
-% rebase('layout.tpl', title='Agenda Cultural - Página Inicial', categories=categories, cities=cities)
+% rebase('layout.tpl', title='Página Inicial', categories=categories, cities=cities)
 
-<div class="hero-section text-center">
-    <h1>Descubra a <span class="culture-text">Cultura</span> da sua Cidade</h1>
-    <p>Encontre os melhores eventos culturais, conecte-se com artistas locais e faça parte de uma comunidade vibrante de amantes da cultura.</p>
-    <a href="/events" class="btn btn-primary">Explorar Eventos</a>
-    <a href="/about" class="btn btn-outline-light ms-3">Saiba Mais</a>
-</div>
+<section class="hero-section text-center">
+    <div class="container">
+        <div class="hero-content-wrapper"> 
+            <h1><span class="highlight-text">Descubra a <span class="culture-text">Cultura</span> da sua Cidade</span></h1>
+            <p class="lead">Encontre os melhores eventos culturais, conecte-se com artistas locais e faça parte de uma comunidade vibrante de amantes da cultura.</p>
+            <div class="hero-buttons">
+                <a href="/events" class="btn btn-primary btn-lg">Explorar Eventos</a>
+                <a href="/about" class="btn btn-outline-light btn-lg ms-3">Saiba Mais</a>
+            </div>
+        </div> 
+    </div>
 </section>
 
 <section class="container stats-section mb-5">
