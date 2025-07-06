@@ -1168,13 +1168,14 @@ a:hover {
 
 
 .hero-section .hero-content-wrapper {
-    background-color: #deeff3;
-    padding: 4.5em 3.5em; 
-    border-radius: 15px; 
-    margin: 0 auto;
-    max-width: 850px; 
-    box-shadow: 0 6px 20px rgb(218, 239, 245); 
-    text-align: center;
+   background-color: rgba(245, 241, 232, 0.92);
+   backdrop-filter: blur(4px);
+   padding: 3rem 2.5rem; 
+   border-radius: 15px; 
+   margin:0 auto;
+   max-width: 800px; 
+   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+   text-align: center;
 }
 
 
