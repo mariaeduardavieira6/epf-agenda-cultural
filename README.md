@@ -91,7 +91,9 @@ Armazena os arquivos `.json` que simulam o banco de dados:
 - 'registrations.json': onde os dados de inscrições de usuários em eventos são persistidos
 
 ---
-### Diagrama de classes
+## 📘 Diagrama de Classes
+![Diagrama de classes](https://github.com/user-attachments/assets/e612649e-aa9a-48e6-8985-982f012f801f)
+
 
 
 
